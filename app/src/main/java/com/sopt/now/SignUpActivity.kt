@@ -58,12 +58,14 @@ class SignUpActivity : AppCompatActivity() {
                 ).show()
             }
             else{
-                val intent = Intent(this@SignUpActivity, MainActivity::class.java)
-                intent.putExtra("userId", signid)
-                intent.putExtra("userPw", signpw)
-                intent.putExtra("userName", signname)
-                intent.putExtra("userMbti", signmbti)
+                val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+                intent.putExtra("userId", signid.toString())
+                intent.putExtra("userPw", signpw.toString())
+                intent.putExtra("userName", signname.toString())
+                intent.putExtra("userMbti", signmbti.toString())
                 startActivity(intent)
+
+
                 Toast.makeText(
                     // 애플리케션 전체적인 컨엑스를 나타내는 객체,
                     applicationContext,

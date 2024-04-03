@@ -12,39 +12,43 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val signid = intent.getStringExtra("userId")
+        val signpw = intent.getStringExtra("userPw")
+        val signname = intent.getStringExtra("userName")
+        val signmbti = intent.getStringExtra("userMbti")
+
         binding.btnLogin.setOnClickListener {
-            val editid = binding.etId.text
-            val editpw = binding.pw2.text
-            if (editid.length < 6) {
-                Snackbar.make(
-                    binding.root,
-                    "ID가 잘못되었습니다.",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            } else if (editpw.length < 6 || editpw.length > 10) {
-                Snackbar.make(
-                    binding.root,
-                    "PW가 잘못되었습니다",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            } else {
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            val editid = binding.etId.text.toString()
+            val editpw = binding.pw2.text.toString()
+            if (editid == signid && editpw == signpw) {
                 Snackbar.make(
                     binding.root,
                     "로그인 성공",
                     Snackbar.LENGTH_SHORT
                 ).show()
 
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                intent.putExtra("userId", signid.toString())
+                intent.putExtra("userPw", signpw.toString())
+                intent.putExtra("userName", signname.toString())
+                intent.putExtra("userMbti", signmbti.toString())
                 startActivity(intent)
-            }
-            binding.btnSignup.setOnClickListener {
-                val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
-                startActivity(intent)
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    "로그인 실패",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
 
 
+
+        binding.btnSignup.setOnClickListener {
+            val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
+            startActivity(intent)
+        }
     }
-
-
 }
+
