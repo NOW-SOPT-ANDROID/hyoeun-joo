@@ -1,5 +1,6 @@
 package com.sopt.now
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,24 +21,60 @@ class SignUpActivity : AppCompatActivity() {
             val signname = binding.etNicknameSignup.text
             val signmbti = binding.etMbtiSignup.text
 
-            if (signid.isNullOrEmpty() || signpw.isNullOrEmpty() ||
+            if (signid.length < 6 || signid.length > 10) {
+                Snackbar.make(
+                    binding.root,
+                    "ID는 6~10글자 사이로 입력해주세요",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            } else if (signpw.length < 8 || signpw.length >12) {
+                Snackbar.make(
+                    binding.root,
+                    "패스워드는 8~12글자 사이로 입력해주세요",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+            else if (signname.length < 1 || signname.isBlank()) {
+                Snackbar.make(
+                    binding.root,
+                    "닉네임은 한 글자 이상이어야 하며, 공백은 불가합니다.",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+            else if (signmbti.length < 4) {
+                Snackbar.make(
+                    binding.root,
+                    "MBTI 형식에 맞게 입력해주세요",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+            else if (signid.isNullOrEmpty() || signpw.isNullOrEmpty() ||
                 signname.isNullOrEmpty() || signmbti.isNullOrEmpty()
             ) {
                 Toast.makeText(
                     applicationContext,
-                    "회원가입 실패\n",
+                    "회원가입 실패",
                     Toast.LENGTH_SHORT
                 ).show()
-            } else if (signid.length < 6 || signid.length > 10) {
-                Snackbar.make(
-                    binding.root,
-                    "ID는 6~~10글자 사이로 입력해주세요",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-
-
-            } else {
             }
+            else{
+                val intent = Intent(this@SignUpActivity, MainActivity::class.java)
+                intent.putExtra("userId", signid)
+                intent.putExtra("userPw", signpw)
+                intent.putExtra("userName", signname)
+                intent.putExtra("userMbti", signmbti)
+                startActivity(intent)
+                Toast.makeText(
+                    // 애플리케션 전체적인 컨엑스를 나타내는 객체,
+                    applicationContext,
+                    "회원가입 성공",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+
+
+
         }
     }
 
