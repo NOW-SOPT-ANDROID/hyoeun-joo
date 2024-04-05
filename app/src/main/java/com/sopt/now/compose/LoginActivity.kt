@@ -30,6 +30,7 @@ import androidx.navigation.findNavController
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.core.content.ContextCompat.getString
 
 class LoginActivity : ComponentActivity() {
@@ -88,7 +89,9 @@ fun LoginScreen(intent: Intent ) {
             value = login_pw,
             onValueChange = { login_pw = it },
             label = { Text(text = "비밀번호를 입력하세요") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = PasswordVisualTransformation()
+
         )
         Spacer(modifier = Modifier.height(96.dp))
         Row(
@@ -116,8 +119,16 @@ fun LoginScreen(intent: Intent ) {
 
                 val signupId = intent.getStringExtra("signup_id")
                 val signupPw = intent.getStringExtra("signup_pw")
+                val signupName = intent.getStringExtra("signup_name")
+                val signupMbti = intent.getStringExtra("signup_mbti")
+
                 when{
                     loginId == signupId && loginPw == signupPw -> {
+
+                        toMain.putExtra("signupId", signupId)
+                        toMain.putExtra("signupPw", signupPw)
+                        toMain.putExtra("signupName", signupName)
+                        toMain.putExtra("signupMbti", signupMbti)
                         context.startActivity(toMain)
                         Toast.makeText(
                             context,
