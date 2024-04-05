@@ -2,6 +2,7 @@ package com.sopt.now.compose
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,16 +16,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +55,7 @@ fun LoginScreen( ) {
     var login_pw by remember {
         mutableStateOf("")
     }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -89,8 +95,11 @@ fun LoginScreen( ) {
         ) {
             Button(
                 onClick = {
-
-                },
+                    val loginId = login_id
+                    val loginPw = login_pw
+                    val toSignup = Intent(context,SignUpActivity::class.java)
+                    context.startActivity(toSignup)
+                          },
                 modifier = Modifier.width(180.dp)
             ){
                 Text(text = "회원가입"
@@ -98,7 +107,30 @@ fun LoginScreen( ) {
             }
             Spacer(modifier = Modifier.width(10.dp))
             Button(onClick = {
+                val loginId = login_id
+                val loginPw = login_pw
+                val toMain = Intent(context,MainActivity::class.java)
+                context.startActivity(toMain)
+                val signupId = toMain.getStringExtra("signup_id")
+                val signupPw = toMain.getStringExtra("signup_pw")
 
+                when{
+                    loginId == signupId && loginPw == signupPw -> {
+                        Toast.makeText(
+                            context,
+                            "로그인 성공"
+                            ,Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+                    else -> {
+                        Toast.makeText(
+                            context,
+                            "ID 또는 비밀번호가 맞지 않습니다"
+                            ,Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
                 ,modifier = Modifier.width(180.dp)) {
                 Text(text = "로그인"
