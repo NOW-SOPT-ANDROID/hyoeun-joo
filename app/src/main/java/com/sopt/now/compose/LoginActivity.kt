@@ -30,6 +30,7 @@ import androidx.navigation.findNavController
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.getString
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +43,7 @@ class LoginActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    LoginScreen()
+                    LoginScreen(intent)
                 }
             }
         }
@@ -50,12 +51,13 @@ class LoginActivity : ComponentActivity() {
 }
 
 @Composable
-fun LoginScreen( ) {
+fun LoginScreen(intent: Intent ) {
     var login_id by remember { mutableStateOf("") }
     var login_pw by remember {
         mutableStateOf("")
     }
     val context = LocalContext.current
+
 
     Column(
         modifier = Modifier
@@ -107,20 +109,22 @@ fun LoginScreen( ) {
             }
             Spacer(modifier = Modifier.width(10.dp))
             Button(onClick = {
+
                 val loginId = login_id
                 val loginPw = login_pw
                 val toMain = Intent(context,MainActivity::class.java)
-                context.startActivity(toMain)
-                val signupId = toMain.getStringExtra("signup_id")
-                val signupPw = toMain.getStringExtra("signup_pw")
 
+                val signupId = intent.getStringExtra("signup_id")
+                val signupPw = intent.getStringExtra("signup_pw")
                 when{
                     loginId == signupId && loginPw == signupPw -> {
+                        context.startActivity(toMain)
                         Toast.makeText(
                             context,
                             "로그인 성공"
                             ,Toast.LENGTH_SHORT
                         ).show()
+
 
                     }
                     else -> {
@@ -145,7 +149,7 @@ fun LoginScreen( ) {
 fun GreetingPreview() {
     NOWSOPTAndroidTheme {
         Column {
-            LoginScreen()
+//            LoginScreen()
         }
     }
 }
