@@ -152,13 +152,10 @@ fun SignUpScreen( ) {
                         val toLogin = Intent(context,LoginActivity::class.java)
                         toLogin.putExtra("signup_id", signup_id)
                         toLogin.putExtra("signup_pw",signup_pw)
-                        val toMain = Intent(context,MainActivity::class.java)
-                        toMain.putExtra("signup_id", signup_id)
-                        toMain.putExtra("signup_pw", signup_pw)
-                        toMain.putExtra("signup_name", signup_name)
-                        toMain.putExtra("signup_mbti", signup_mbti)
-
+                        toLogin.putExtra("signup_name", signup_name)
+                        toLogin.putExtra("signup_mbti", signup_mbti)
                         context.startActivity(toLogin)
+
                         Toast.makeText(
                             context,
                             "로그인 성공",
