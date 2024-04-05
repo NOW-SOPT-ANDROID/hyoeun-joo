@@ -1,6 +1,7 @@
 package com.sopt.now.compose
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
+import android.content.Context
+import android.content.Intent
+import androidx.compose.ui.platform.LocalContext
 
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,13 +56,14 @@ class SignUpActivity : ComponentActivity() {
 }
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen( ) {
     var signup_id by remember { mutableStateOf("") }
     var signup_pw by remember {
         mutableStateOf("")
     }
     var signup_name by remember { mutableStateOf("") }
     var signup_mbti by remember { mutableStateOf("") }
+    val context = LocalContext.current
     Column(
 
         modifier = Modifier
@@ -73,11 +78,12 @@ fun SignUpScreen() {
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(86.dp))
+        Spacer(modifier = Modifier.height(60.dp))
         Text(text = "ID", fontSize = 30.sp, color = Color.Black)
         TextField(
             value = signup_id,
-            onValueChange = { signup_id = it },
+            onValueChange = { signup_id = it
+                            },
             label = { Text(text = "ID를 입력하세요") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -86,7 +92,8 @@ fun SignUpScreen() {
         Text(text = "PW", fontSize = 30.sp, color = Color.Black)
         TextField(
             value = signup_pw,
-            onValueChange = { signup_pw = it },
+            onValueChange = { signup_pw = it
+                },
             label = { Text(text = "비밀번호를 입력하세요") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -98,7 +105,7 @@ fun SignUpScreen() {
             label = { Text(text = "NickName를 입력하세요") },
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(46.dp))
+        Spacer(modifier = Modifier.height(30.dp))
         Text(text = "MBTI", fontSize = 30.sp, color = Color.Black)
         TextField(
             value = signup_mbti,
@@ -111,14 +118,56 @@ fun SignUpScreen() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ){
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = {
+                when {
+                    signup_id.length !in 6..10 -> {
+                        Toast.makeText(
+                            context,
+                            "ID는 6자 이상, 10자 이하이어야 합니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    signup_pw.length !in 8..12 -> {
+                        Toast.makeText(
+                            context,
+                            "비밀번호는 8자 이상, 12자 이하이어야 합니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    signup_name.isBlank() -> {
+                        Toast.makeText(
+                            context,
+                            "닉네임을 입력하세요.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    signup_mbti.length > 4 -> {
+                        Toast.makeText(
+                            context,
+                            "MBTI는 4자 이하여야 합니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    else -> {
+                        val toMain = Intent(context,LoginActivity::class.java)
+                        toMain.putExtra("signup_id", signup_id)
+                        toMain.putExtra("signup_pw",signup_pw)
+                        context.startActivity(toMain)
+                        Toast.makeText(
+                            context,
+                            "로그인 성공",
+                            Toast.LENGTH_SHORT
+                        )
+                    }
+                }
+            },
                 modifier = Modifier.width(280.dp)
             ) {
-                Text(text = "회원가입 하기", fontSize =30.sp)
+                Text(text = "회원가입 하기", fontSize = 30.sp)
+
 
             }
         }
-
 
 
     }
