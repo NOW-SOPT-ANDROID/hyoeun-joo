@@ -8,16 +8,24 @@
     <string name="string_nickname">닉네임</string>
     <string name="string_mbti">MBTI</string>
 
+    <string name="id_error">ID는 6~10글자 사이로 입력해주세요</string>
+    <string name="pw_error">패스워드는 8~12글자 사이로 입력해주세요</string>
+    <string name="nickname_error">ID는 6~10글자 사이로 입력해주세요</string>
+    <string name="mbti_error">ID는 6~10글자 사이로 입력해주세요</string>
+
     <!-- SignUpActivity -->
     <string name="tv_sign_up_title">Sign Up</string>
     <string name="tv_sign_up_nickname_hint">닉네임을 입력해주세요</string>
     <string name="tv_sign_up_mbti_hint">MBTI를 입력해주세요</string>
     <string name="sign_up_btn">회원가입 하기</string>
+    <string name="sign_up_fail">회원가입 실패</string>
+    <string name="sign_up_success">회원가입 성공</string>
+
 
     <!-- LogInActivity -->
     <string name="tv_log_in_title">Welcome To Sopt</string>
     <string name="log_in_btn">로그인 하기</string>
-
-
+    <string name="log_in_fail">로그인 실패</string>
+    <string name="log_in_success">로그인 성공</string>
 
 </resources>

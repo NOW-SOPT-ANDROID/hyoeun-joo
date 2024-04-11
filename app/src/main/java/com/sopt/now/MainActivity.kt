@@ -12,17 +12,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // SignUpActivity로부터 전달된 값들을 받아옴
         val userId = intent.getStringExtra("userId")
         val userPw = intent.getStringExtra("userPw")
         val userName = intent.getStringExtra("userName")
         val userMbti = intent.getStringExtra("userMbti")
 
-        // 받아온 값을 각각의 TextView에 설정
-        binding.tvUserId.text = "ID: $userId"
-        binding.tvUserPw.text = "Password: $userPw"
-        binding.tvUserName.text = "Name: $userName"
-        binding.tvUserMbti.text = "MBTI: $userMbti"
+        with(binding) {
+            tvUserId.text = "ID: $userId"
+            tvUserPw.text = "Password: $userPw"
+            tvUserName.text = "Name: $userName"
+            tvUserMbti.text = "MBTI: $userMbti"
+        }
     }
 }
 
