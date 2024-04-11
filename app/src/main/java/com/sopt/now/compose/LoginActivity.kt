@@ -34,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.core.content.ContextCompat.getString
 import com.sopt.now.compose.TextField.CustomTextField
+import com.sopt.now.compose.feature.model.UserDataInput
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,10 +57,9 @@ class LoginActivity : ComponentActivity() {
 @Composable
 fun LoginScreen(intent: Intent) {
     var login_id by remember { mutableStateOf("") }
-    var login_pw by remember {
-        mutableStateOf("")
-    }
+    var login_pw by remember { mutableStateOf("") }
     val context = LocalContext.current
+    val userData: UserDataInput? = intent?.getParcelableExtra("user_data")
 
 
     Column(
@@ -78,7 +78,11 @@ fun LoginScreen(intent: Intent) {
         Spacer(modifier = Modifier.height(86.dp))
         Text(text = "ID", fontSize = 30.sp, color = Color.Black)
         Spacer(modifier = Modifier.height(16.dp))
-        CustomTextField(value = login_id, onInputChange = { login_id = it }, label = "ID를 입력하세요")
+        CustomTextField(
+            value = login_id,
+            onInputChange = { login_id = it },
+            label = stringResource(R.string.string_id_hint)
+        )
 
         Spacer(modifier = Modifier.height(46.dp))
         Text(text = "PW", fontSize = 30.sp, color = Color.Black)
@@ -96,16 +100,12 @@ fun LoginScreen(intent: Intent) {
         ) {
             Button(
                 onClick = {
-                    val loginId = login_id
-                    val loginPw = login_pw
                     val toSignup = Intent(context, SignUpActivity::class.java)
                     context.startActivity(toSignup)
                 },
                 modifier = Modifier.width(180.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.sign_up_btn), fontSize = 20.sp
-                )
+                Text( text = stringResource(R.string.sign_up_btn), fontSize = 20.sp)
             }
             Spacer(modifier = Modifier.width(10.dp))
             Button(onClick = {
@@ -114,38 +114,24 @@ fun LoginScreen(intent: Intent) {
                 val loginPw = login_pw
                 val toMain = Intent(context, MainActivity::class.java)
 
-                val signupId = intent.getStringExtra("signup_id")
-                val signupPw = intent.getStringExtra("signup_pw")
-                val signupName = intent.getStringExtra("signup_name")
-                val signupMbti = intent.getStringExtra("signup_mbti")
+                val signupId = userData?.getUserSignUpId()
+                val signupPw = userData?.getUserSignUpPw()
+
 
                 when {
                     loginId == signupId && loginPw == signupPw -> {
+                        toMain.putExtra("user_data", userData)
 
-                        toMain.putExtra("signupId", signupId)
-                        toMain.putExtra("signupPw", signupPw)
-                        toMain.putExtra("signupName", signupName)
-                        toMain.putExtra("signupMbti", signupMbti)
                         context.startActivity(toMain)
-                        Toast.makeText(
-                            context,
-                            "로그인 성공", Toast.LENGTH_SHORT
-                        ).show()
-
-
+                        showToast(context, R.string.log_in_success)
                     }
 
                     else -> {
-                        Toast.makeText(
-                            context,
-                            R.string.log_in_fail, Toast.LENGTH_SHORT
-                        ).show()
+                        showToast(context,R.string.log_in_fail)
                     }
                 }
             }, modifier = Modifier.width(180.dp)) {
-                Text(
-                    text = stringResource(R.string.log_in_btn), fontSize = 20.sp
-                )
+                Text(text = stringResource(R.string.log_in_btn), fontSize = 20.sp)
             }
         }
     }
@@ -153,7 +139,7 @@ fun LoginScreen(intent: Intent) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun Preview() {
     NOWSOPTAndroidTheme {
         Column {
 //          LoginScreen()

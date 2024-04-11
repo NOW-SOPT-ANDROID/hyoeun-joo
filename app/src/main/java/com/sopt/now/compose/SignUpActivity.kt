@@ -35,14 +35,19 @@ import android.os.Message
 import android.view.View
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import com.sopt.now.compose.Constants.Constant.Companion.MAX_ID_LENGTH
+import com.sopt.now.compose.Constants.Constant.Companion.MAX_MBTI_LENGTH
+import com.sopt.now.compose.Constants.Constant.Companion.MAX_PW_LENGTH
+import com.sopt.now.compose.Constants.Constant.Companion.MIN_ID_LENGTH
+import com.sopt.now.compose.Constants.Constant.Companion.MIN_PW_LENGTH
 import com.sopt.now.compose.TextField.CustomTextField
+import com.sopt.now.compose.feature.model.UserDataInput
 
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             NOWSOPTAndroidTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -58,14 +63,13 @@ class SignUpActivity : ComponentActivity() {
 @Composable
 fun SignUpScreen() {
     var signup_id by remember { mutableStateOf("") }
-    var signup_pw by remember {
-        mutableStateOf("")
-    }
+    var signup_pw by remember { mutableStateOf("") }
     var signup_name by remember { mutableStateOf("") }
     var signup_mbti by remember { mutableStateOf("") }
     val context = LocalContext.current
+    
+    val userData = UserDataInput(signup_id,signup_pw,signup_name,signup_mbti)
     Column(
-
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp),
@@ -116,12 +120,12 @@ fun SignUpScreen() {
             Button(
                 onClick = {
                     when {
-                        signup_id.length !in 6..10 -> {
+                        signup_id.length !in MIN_ID_LENGTH..MAX_ID_LENGTH -> {
                             showToast(context, R.string.id_error)
 
                         }
 
-                        signup_pw.length !in 8..12 -> {
+                        signup_pw.length !in MIN_PW_LENGTH..MAX_PW_LENGTH -> {
                             showToast(context, R.string.pw_error)
 
                         }
@@ -131,17 +135,16 @@ fun SignUpScreen() {
 
                         }
 
-                        signup_mbti.length > 4 -> {
+                        signup_mbti.length > MAX_MBTI_LENGTH -> {
                             showToast(context, R.string.mbti_error)
 
                         }
 
                         else -> {
-                            val toLogin = Intent(context, LoginActivity::class.java)
-                            toLogin.putExtra("signup_id", signup_id)
-                            toLogin.putExtra("signup_pw", signup_pw)
-                            toLogin.putExtra("signup_name", signup_name)
-                            toLogin.putExtra("signup_mbti", signup_mbti)
+                            val toLogin = Intent(context, LoginActivity::class.java).apply{
+                                putExtra("user_data", userData)
+                            }
+
                             context.startActivity(toLogin)
 
                             showToast(context, R.string.log_in_success)
@@ -160,16 +163,7 @@ fun SignUpScreen() {
 
     }
 
-//
-//    companion object {
-//        const val MIN_ID_LENGTH = 6
-//        const val MAX_ID_LENGTH = 10
-//        const val MIN_PW_LENGTH = 8
-//        const val MAX_PW_LENGTH = 12
-//        const val MIN_NICKNAME_LENGTH = 1
-//        const val MAX_MBTI_LENGTH = 4
-//
-//    }
+
 }
 
 fun showToast(context: Context, message: Int) {
