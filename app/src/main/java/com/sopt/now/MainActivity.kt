@@ -11,18 +11,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val userData = intent.getParcelableExtra<UserDataInput>(LoginActivity.INTENT_USER_DATA)
 
-        val userId = intent.getStringExtra("userId")
-        val userPw = intent.getStringExtra("userPw")
-        val userName = intent.getStringExtra("userName")
-        val userMbti = intent.getStringExtra("userMbti")
+        val signId = userData?.getUserSignUpId()
+        val signPw = userData?.getUserSignUpPw()
+        val signNickname = userData?.getUserSignUpNickName()
+        val signMbti = userData?.getUserSignUpMbti()
 
         with(binding) {
-            tvUserId.text = "ID: $userId"
-            tvUserPw.text = "Password: $userPw"
-            tvUserName.text = "Name: $userName"
-            tvUserMbti.text = "MBTI: $userMbti"
+            tvUserId.text = "ID: $signId"
+            tvUserPw.text = "Password: $signPw"
+            tvUserName.text = "Name: $signNickname"
+            tvUserMbti.text = "MBTI: $signMbti"
         }
+    }
+
+    companion object {
+        const val INTENT_USER_DATA = "userData"
     }
 }
 

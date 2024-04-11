@@ -10,13 +10,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.sopt.now.databinding.ActivitySignupBinding
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class UserData(
-    val userId: String,
-    val userPW: String,
-    val userNickName: String,
-    val userMbti: String,
-) : Parcelable
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
@@ -32,14 +25,14 @@ class SignUpActivity : AppCompatActivity() {
             val signname = binding.etNicknameSignup.text.toString()
             val signmbti = binding.etMbtiSignup.text.toString()
 
-            val userData = UserData(signid, signpw, signname, signmbti)
+            val userData = UserDataInput(signid, signpw, signname, signmbti)
 
             when {
                 signid.isNullOrEmpty() || signpw.isNullOrEmpty() ||
                         signname.isNullOrEmpty() || signmbti.isNullOrEmpty()
                 -> {
                     Toast.makeText(
-                        applicationContext,
+                        this,
                         getString(R.string.sign_up_fail),
                         Toast.LENGTH_SHORT
                     ).show()
@@ -57,7 +50,7 @@ class SignUpActivity : AppCompatActivity() {
                     showSnackbar(binding.root, getString(R.string.nickname_error))
                 }
 
-                (signmbti.length < MAX_MBTI_LENGTH) -> {
+                (signmbti.length > MAX_MBTI_LENGTH) -> {
                     showSnackbar(binding.root, getString(R.string.mbti_error))
                 }
 
@@ -68,7 +61,7 @@ class SignUpActivity : AppCompatActivity() {
                     startActivity(intent)
 
                     Toast.makeText(
-                        applicationContext,
+                        this,
                         getString(R.string.sign_up_success),
                         Toast.LENGTH_SHORT
                     ).show()

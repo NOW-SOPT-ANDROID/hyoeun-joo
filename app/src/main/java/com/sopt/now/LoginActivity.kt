@@ -21,25 +21,20 @@ class LoginActivity : AppCompatActivity() {
             ).show()
         }
         setContentView(binding.root)
-        val userData = intent.getParcelableExtra<UserData>(INTENT_USER_DATA)
+        val userData = intent.getParcelableExtra<UserDataInput>(INTENT_USER_DATA)
 
-        val signid = intent.getStringExtra("userId")
-        val signpw = intent.getStringExtra("userPw")
-        val signname = intent.getStringExtra("userName")
-        val signmbti = intent.getStringExtra("userMbti")
+        val signId = userData?.getUserSignUpId()
+        val signPw = userData?.getUserSignUpPw()
 
         binding.btnLogin.setOnClickListener {
             val editid = binding.etId.text.toString()
             val editpw = binding.pw2.text.toString()
-            if (editid == signid && editpw == signpw) {
+            if (editid == signId && editpw == signPw) {
                 showSnacker(binding.root, getString(R.string.log_in_success))
 
 
                 val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
-                    putExtra("userId", signid.toString())
-                    putExtra("userPw", signpw.toString())
-                    putExtra("userName", signname.toString())
-                    putExtra("userMbti", signmbti.toString())
+                    putExtra(MainActivity.INTENT_USER_DATA, userData)
                 }
                 startActivity(intent)
                 finish()
