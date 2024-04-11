@@ -30,8 +30,10 @@ import androidx.navigation.findNavController
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.core.content.ContextCompat.getString
+import com.sopt.now.compose.TextField.CustomTextField
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +54,7 @@ class LoginActivity : ComponentActivity() {
 }
 
 @Composable
-fun LoginScreen(intent: Intent ) {
+fun LoginScreen(intent: Intent) {
     var login_id by remember { mutableStateOf("") }
     var login_pw by remember {
         mutableStateOf("")
@@ -67,7 +69,7 @@ fun LoginScreen(intent: Intent ) {
     ) {
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = "Welcome to sopt",
+            text = stringResource(R.string.tv_log_in_title),
             fontSize = 40.sp,
             color = Color.Black,
             textAlign = TextAlign.Center,
@@ -76,23 +78,17 @@ fun LoginScreen(intent: Intent ) {
         Spacer(modifier = Modifier.height(86.dp))
         Text(text = "ID", fontSize = 30.sp, color = Color.Black)
         Spacer(modifier = Modifier.height(16.dp))
-        TextField(
-            value = login_id,
-            onValueChange = { login_id = it },
-            label = { Text(text = "ID를 입력하세요") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        CustomTextField(value = login_id, onInputChange = { login_id = it }, label = "ID를 입력하세요")
 
         Spacer(modifier = Modifier.height(46.dp))
         Text(text = "PW", fontSize = 30.sp, color = Color.Black)
-        TextField(
+        CustomTextField(
             value = login_pw,
-            onValueChange = { login_pw = it },
-            label = { Text(text = "비밀번호를 입력하세요") },
-            modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = PasswordVisualTransformation()
-
+            onInputChange = { login_pw = it },
+            label = stringResource(R.string.string_pw_hint),
+            isPwSecret = true
         )
+
         Spacer(modifier = Modifier.height(96.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -102,27 +98,28 @@ fun LoginScreen(intent: Intent ) {
                 onClick = {
                     val loginId = login_id
                     val loginPw = login_pw
-                    val toSignup = Intent(context,SignUpActivity::class.java)
+                    val toSignup = Intent(context, SignUpActivity::class.java)
                     context.startActivity(toSignup)
-                          },
+                },
                 modifier = Modifier.width(180.dp)
-            ){
-                Text(text = "회원가입"
-                    , fontSize = 20.sp)
+            ) {
+                Text(
+                    text = stringResource(R.string.sign_up_btn), fontSize = 20.sp
+                )
             }
             Spacer(modifier = Modifier.width(10.dp))
             Button(onClick = {
 
                 val loginId = login_id
                 val loginPw = login_pw
-                val toMain = Intent(context,MainActivity::class.java)
+                val toMain = Intent(context, MainActivity::class.java)
 
                 val signupId = intent.getStringExtra("signup_id")
                 val signupPw = intent.getStringExtra("signup_pw")
                 val signupName = intent.getStringExtra("signup_name")
                 val signupMbti = intent.getStringExtra("signup_mbti")
 
-                when{
+                when {
                     loginId == signupId && loginPw == signupPw -> {
 
                         toMain.putExtra("signupId", signupId)
@@ -132,24 +129,23 @@ fun LoginScreen(intent: Intent ) {
                         context.startActivity(toMain)
                         Toast.makeText(
                             context,
-                            "로그인 성공"
-                            ,Toast.LENGTH_SHORT
+                            "로그인 성공", Toast.LENGTH_SHORT
                         ).show()
 
 
                     }
+
                     else -> {
                         Toast.makeText(
                             context,
-                            "ID 또는 비밀번호가 맞지 않습니다"
-                            ,Toast.LENGTH_SHORT
+                            R.string.log_in_fail, Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
-            }
-                ,modifier = Modifier.width(180.dp)) {
-                Text(text = "로그인"
-                    , fontSize = 20.sp)
+            }, modifier = Modifier.width(180.dp)) {
+                Text(
+                    text = stringResource(R.string.log_in_btn), fontSize = 20.sp
+                )
             }
         }
     }
@@ -160,7 +156,7 @@ fun LoginScreen(intent: Intent ) {
 fun GreetingPreview() {
     NOWSOPTAndroidTheme {
         Column {
-//            LoginScreen()
+//          LoginScreen()
         }
     }
 }
