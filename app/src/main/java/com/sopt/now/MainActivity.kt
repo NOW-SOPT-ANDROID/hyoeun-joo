@@ -1,15 +1,33 @@
 package com.sopt.now
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.sopt.now.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        val userData = intent.getParcelableExtra<UserDataInput>(LoginActivity.INTENT_USER_DATA)
 
+        val signId = userData?.getUserSignUpId()
+        val signPw = userData?.getUserSignUpPw()
+        val signNickname = userData?.getUserSignUpNickName()
+        val signMbti = userData?.getUserSignUpMbti()
+
+        with(binding) {
+            tvUserId.text = "ID: $signId"
+            tvUserPw.text = "Password: $signPw"
+            tvUserName.text = "Name: $signNickname"
+            tvUserMbti.text = "MBTI: $signMbti"
+        }
+    }
+
+    companion object {
+        const val INTENT_USER_DATA = "userData"
     }
 }
+
