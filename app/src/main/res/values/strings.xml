@@ -10,8 +10,8 @@
 
     <string name="id_error">ID는 6~10글자 사이로 입력해주세요</string>
     <string name="pw_error">패스워드는 8~12글자 사이로 입력해주세요</string>
-    <string name="nickname_error">ID는 6~10글자 사이로 입력해주세요</string>
-    <string name="mbti_error">ID는 6~10글자 사이로 입력해주세요</string>
+    <string name="nickname_error">닉네임은 1자 이상, 공백 없이 입력해주세요</string>
+    <string name="mbti_error">mbti 형식에 맞게 써주세요</string>
 
     <!-- SignUpActivity -->
     <string name="tv_sign_up_title">Sign Up</string>
