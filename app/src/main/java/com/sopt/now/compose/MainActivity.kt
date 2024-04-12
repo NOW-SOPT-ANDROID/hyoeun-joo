@@ -31,117 +31,76 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sopt.now.compose.TextField.mainInfoText
+import com.sopt.now.compose.feature.model.UserDataInput
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 
+
 class MainActivity : ComponentActivity() {
-            override fun onCreate(savedInstanceState: Bundle?) {
-                super.onCreate(savedInstanceState)
-                val intent = intent
-                val signupId = intent.getStringExtra("signupId") ?: ""
-                val signupPw = intent.getStringExtra("signupPw") ?: ""
-                val signupName = intent.getStringExtra("signupName") ?: ""
-                val signupMbti = intent.getStringExtra("signupMbti") ?: ""
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-                setContent {
-                    NOWSOPTAndroidTheme {
-                        // A surface container using the 'background' color from the theme
-                        Surface(
-                            modifier = Modifier.fillMaxSize(),
-                            color = MaterialTheme.colorScheme.background
-                        ) {
+        val userData: UserDataInput? = intent.getParcelableExtra("user_data")
 
-
-                            MainScreen(signupId, signupPw, signupName, signupMbti)
-                        }
+        setContent {
+            NOWSOPTAndroidTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    userData?.let { user ->
+                        MainScreen(user)
                     }
                 }
-
             }
+        }
+    }
 }
-
 
 @Composable
-fun MainScreen(signupId: String, signupPw: String, signupName: String, signupMbti: String) {
-Row(
-    modifier = Modifier
-    .fillMaxWidth()
-        .fillMaxHeight()
-    .padding(20.dp)
-    .padding(start = 8.dp)
-       )
-
-{
-    val image: Painter = painterResource(id = R.drawable.profile)
-    Image(painter = image, contentDescription = "Profile Image",
-        modifier = Modifier.padding(start = 8.dp))
-}
+fun MainScreen(userData: UserDataInput) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp)
-            .padding(top = 35.dp)
-            .padding(start = 180.dp)
-
-    ){
-Column(
-    modifier = Modifier
             .fillMaxHeight()
-)
-{Text(
-    text = "Name",
-    fontSize = 30.sp,
-    color = Color.Black,
-    modifier = Modifier.fillMaxWidth()
-        .padding(bottom = 20.dp)
-)
-    Text(
-        text = " $signupName",
-        fontSize = 24.sp,
-        color = Color.Black,
-        modifier = Modifier.fillMaxWidth()
-    )}
-
+            .padding(20.dp)
+            .padding(start = 8.dp)
+    ) {
+        val image: Painter = painterResource(id = R.drawable.profile)
+        Image(
+            painter = image,
+            contentDescription = "Profile Image",
+            modifier = Modifier.padding(start = 8.dp)
+        )
     }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(15.dp)
             .padding(bottom = 150.dp)
-            .padding(start = 20.dp)
-        ,
+            .padding(start = 20.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
         Text(
-            text = "ID: $signupId",
-            fontSize = 24.sp,
+            text = "Name: ${userData.userNickName}",
+            fontSize = 30.sp,
             color = Color.Black,
             modifier = Modifier
-                .padding(8.dp)
-                .padding(bottom = 8.dp)
+                .fillMaxWidth()
+                .padding(bottom = 20.dp)
         )
-        Text(
-            text = "Password: $signupPw",
-            fontSize = 24.sp,
-            color = Color.Black,
-            modifier = Modifier
-                .padding(8.dp)
-                .padding(bottom = 8.dp)
-        )
-        Text(
-            text = "MBTI: $signupMbti",
-            fontSize = 24.sp,
-            color = Color.Black,
-            modifier = Modifier.padding(8.dp)
-        )
+        mainInfoText(label = "ID", value = userData.userId)
+        mainInfoText(label = "PW", value = userData.userPW)
+        mainInfoText(label = "MBTI", value = userData.userMbti)
     }
 }
 
 
-    @Preview(showBackground = true)
-    @Composable
-    fun GreetingPreview2() {
-        NOWSOPTAndroidTheme {
-            MainScreen("signupId", "signupPw", "signupName", "signupMbti")
-                }
+@Preview(showBackground = true)
+@Composable
+fun Preview2() {
+    NOWSOPTAndroidTheme {
+
     }
+}
