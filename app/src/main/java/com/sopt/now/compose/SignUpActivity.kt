@@ -67,8 +67,8 @@ fun SignUpScreen() {
     var signup_name by remember { mutableStateOf("") }
     var signup_mbti by remember { mutableStateOf("") }
     val context = LocalContext.current
-    
-    val userData = UserDataInput(signup_id,signup_pw,signup_name,signup_mbti)
+
+    val userData = UserDataInput(signup_id, signup_pw, signup_name, signup_mbti)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -141,13 +141,13 @@ fun SignUpScreen() {
                         }
 
                         else -> {
-                            val toLogin = Intent(context, LoginActivity::class.java).apply{
+                            val toLogin = Intent(context, LoginActivity::class.java).apply {
                                 putExtra("user_data", userData)
                             }
 
                             context.startActivity(toLogin)
 
-                            showToast(context, R.string.log_in_success)
+                            showToast(context, R.string.sign_up_success)
 
                         }
                     }

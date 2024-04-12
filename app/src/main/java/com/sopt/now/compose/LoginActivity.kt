@@ -93,45 +93,49 @@ fun LoginScreen(intent: Intent) {
             isPwSecret = true
         )
 
-        Spacer(modifier = Modifier.height(96.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
         ) {
-            Button(
-                onClick = {
-                    val toSignup = Intent(context, SignUpActivity::class.java)
-                    context.startActivity(toSignup)
-                },
-                modifier = Modifier.width(180.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text( text = stringResource(R.string.sign_up_btn), fontSize = 20.sp)
-            }
-            Spacer(modifier = Modifier.width(10.dp))
-            Button(onClick = {
-
-                val loginId = login_id
-                val loginPw = login_pw
-                val toMain = Intent(context, MainActivity::class.java)
-
-                val signupId = userData?.getUserSignUpId()
-                val signupPw = userData?.getUserSignUpPw()
-
-
-                when {
-                    loginId == signupId && loginPw == signupPw -> {
-                        toMain.putExtra("user_data", userData)
-
-                        context.startActivity(toMain)
-                        showToast(context, R.string.log_in_success)
-                    }
-
-                    else -> {
-                        showToast(context,R.string.log_in_fail)
-                    }
+                Button(
+                    onClick = {
+                        val toSignup = Intent(context, SignUpActivity::class.java)
+                        context.startActivity(toSignup)
+                    },
+                    modifier = Modifier.width(180.dp)
+                ) {
+                    Text(text = stringResource(R.string.sign_up_btn), fontSize = 20.sp)
                 }
-            }, modifier = Modifier.width(180.dp)) {
-                Text(text = stringResource(R.string.log_in_btn), fontSize = 20.sp)
+                Spacer(modifier = Modifier.width(10.dp))
+                Button(onClick = {
+
+                    val loginId = login_id
+                    val loginPw = login_pw
+                    val toMain = Intent(context, MainActivity::class.java)
+
+                    val signupId = userData?.getUserSignUpId()
+                    val signupPw = userData?.getUserSignUpPw()
+
+
+                    when {
+                        loginId == signupId && loginPw == signupPw -> {
+                            toMain.putExtra("user_data", userData)
+
+                            context.startActivity(toMain)
+                            showToast(context, R.string.log_in_success)
+                        }
+
+                        else -> {
+                            showToast(context, R.string.log_in_fail)
+                        }
+                    }
+                }, modifier = Modifier.width(180.dp)) {
+                    Text(text = stringResource(R.string.log_in_btn), fontSize = 20.sp)
+                }
             }
         }
     }
