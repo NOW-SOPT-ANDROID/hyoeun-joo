@@ -154,7 +154,7 @@ fun SignUpScreen() {
                 },
                 modifier = Modifier.width(280.dp)
             ) {
-                Text(text = "회원가입 하기", fontSize = 30.sp)
+                Text(text = stringResource(R.string.sign_up_btn), fontSize = 30.sp)
 
 
             }

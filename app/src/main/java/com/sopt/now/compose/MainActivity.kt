@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,9 +91,9 @@ fun MainScreen(userData: UserDataInput) {
                 .fillMaxWidth()
                 .padding(bottom = 20.dp)
         )
-        mainInfoText(label = "ID", value = userData.userId)
-        mainInfoText(label = "PW", value = userData.userPW)
-        mainInfoText(label = "MBTI", value = userData.userMbti)
+        mainInfoText(label = stringResource(R.string.string_id), value = userData.userId)
+        mainInfoText(label = stringResource(R.string.string_pw), value = userData.userPW)
+        mainInfoText(label = stringResource(R.string.string_mbti), value = userData.userMbti)
     }
 }
 
