@@ -6,6 +6,7 @@ import android.service.autofill.UserData
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.sopt.now.Home.MyPageFragment
 import com.sopt.now.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -25,6 +26,8 @@ class LoginActivity : AppCompatActivity() {
 
         val signId = userData?.getUserSignUpId()
         val signPw = userData?.getUserSignUpPw()
+        val signNickname = userData?.getUserSignUpNickName()
+        val signMbti = userData?.getUserSignUpMbti()
 
         binding.btnLogin.setOnClickListener {
             val editid = binding.etId.text.toString()

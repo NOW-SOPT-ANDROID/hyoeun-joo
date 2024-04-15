@@ -31,8 +31,8 @@ class MyPageFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        val userData = arguments?.getParcelable<UserDataInput>(MainActivity.INTENT_USER_DATA)
+        val bundle = arguments
+        val userData = bundle?.getParcelable<UserDataInput>(INTENT_USER_DATA)
 
         val signId = userData?.getUserSignUpId()
         val signPw = userData?.getUserSignUpPw()
