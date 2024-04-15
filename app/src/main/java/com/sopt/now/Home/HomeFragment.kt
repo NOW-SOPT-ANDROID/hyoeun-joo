@@ -8,7 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sopt.now.Friend.FriendAdapter
+import com.sopt.now.UserAdapter
 import com.sopt.now.databinding.FragmentHomeBinding
+
+
 
 class HomeFragment: Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -27,10 +30,21 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val friendAdapter = FriendAdapter()
+        val userAdapter = UserAdapter()
+
+
+//        val concatAdapter = ConcatAdapter(userAdapter, friendAdapter)
+
         binding.rvFriends.run {
             adapter = friendAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+        binding.rvFriends.run {
+//            adapter = concatAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
+
         friendAdapter.setFriendList(viewModel.mockFriendList)
     }
     override fun onDestroyView() {
