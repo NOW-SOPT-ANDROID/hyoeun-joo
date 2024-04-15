@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
 
 
                 val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
-                    putExtra(MainActivity.INTENT_USER_DATA, userData)
+                   putExtra(MainActivity.INTENT_USER_DATA, userData)
                 }
                 startActivity(intent)
                 finish()

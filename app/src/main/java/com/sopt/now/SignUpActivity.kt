@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.sopt.now.Home.HomeFragment
+import com.sopt.now.Home.MyPageFragment
 import com.sopt.now.databinding.ActivitySignupBinding
 import kotlinx.parcelize.Parcelize
 
@@ -57,6 +59,8 @@ class SignUpActivity : AppCompatActivity() {
                 else -> {
                     val intent = Intent(this@SignUpActivity, LoginActivity::class.java).apply {
                         putExtra(LoginActivity.INTENT_USER_DATA, userData)
+
+
                     }
                     startActivity(intent)
 

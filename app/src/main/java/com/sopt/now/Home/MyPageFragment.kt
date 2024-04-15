@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.sopt.now.LoginActivity
 import com.sopt.now.MainActivity
 import com.sopt.now.SignUpActivity
 import com.sopt.now.UserDataInput
@@ -31,8 +32,8 @@ class MyPageFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bundle = arguments
-        val userData = bundle?.getParcelable<UserDataInput>(INTENT_USER_DATA)
+
+        val userData = arguments?.getParcelable<UserDataInput>(INTENT_USER_DATA)
 
         val signId = userData?.getUserSignUpId()
         val signPw = userData?.getUserSignUpPw()
