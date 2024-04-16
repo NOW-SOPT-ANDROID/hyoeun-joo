@@ -1,4 +1,4 @@
-package com.sopt.now
+package com.sopt.now.User
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
