@@ -3,6 +3,7 @@ package com.sopt.now.Home
 import androidx.lifecycle.ViewModel
 import com.sopt.now.Friend.FriendData
 import com.sopt.now.R
+import com.sopt.now.User.UserData
 
 class HomeViewModel : ViewModel() {
 
@@ -70,4 +71,12 @@ class HomeViewModel : ViewModel() {
 
 
         )
+
+    val mockUserList = listOf<UserData>(
+        UserData(
+            profileImage = R.drawable.pic,
+            name = "주효은",
+            selfDescription = "34기 YB입니다!!",
+        ),
+    )
 }

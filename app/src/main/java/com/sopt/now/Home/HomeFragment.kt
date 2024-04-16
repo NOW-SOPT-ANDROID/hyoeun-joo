@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sopt.now.Friend.FriendAdapter
-import com.sopt.now.UserAdapter
+import com.sopt.now.User.UserAdapter
 import com.sopt.now.databinding.FragmentHomeBinding
 
 
@@ -35,7 +35,7 @@ class HomeFragment: Fragment() {
         val userAdapter = UserAdapter()
 
         friendAdapter.setFriendList(viewModel.mockFriendList)
-
+        userAdapter.setUserList(viewModel.mockUserList)
         val concatAdapter = ConcatAdapter(userAdapter, friendAdapter)
 
         binding.rvFriends.run {
