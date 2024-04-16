@@ -1,6 +1,7 @@
 package com.sopt.now.Home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,9 @@ class MyPageFragment: Fragment() {
         val signPw = userData?.getUserSignUpPw()
         val signNickname = userData?.getUserSignUpNickName()
         val signMbti = userData?.getUserSignUpMbti()
+
+        Log.d("IntentData", "fragment data: $userData")
+        Log.d("IntentData", "fragment data: $signId")
 
         with(binding) {
             tvUserId.text = "ID: $signId"
