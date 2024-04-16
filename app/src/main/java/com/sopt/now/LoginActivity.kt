@@ -2,11 +2,11 @@ package com.sopt.now
 
 import android.content.Intent
 import android.os.Bundle
-import android.service.autofill.UserData
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.sopt.now.User.UserDataInput
 import com.sopt.now.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
