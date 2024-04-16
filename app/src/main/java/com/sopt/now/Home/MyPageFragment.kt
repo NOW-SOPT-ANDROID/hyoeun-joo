@@ -6,10 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.sopt.now.LoginActivity
-import com.sopt.now.MainActivity
-import com.sopt.now.SignUpActivity
-import com.sopt.now.UserDataInput
+import com.sopt.now.User.UserDataInput
 import com.sopt.now.databinding.FragmentMyPageBinding
 
 

@@ -1,12 +1,12 @@
 package com.sopt.now
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sopt.now.Home.HomeFragment
 import com.sopt.now.Home.MyPageFragment
 import com.sopt.now.Home.SearchFragment
+import com.sopt.now.User.UserDataInput
 import com.sopt.now.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
