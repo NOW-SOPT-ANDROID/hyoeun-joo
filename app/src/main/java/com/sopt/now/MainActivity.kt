@@ -18,6 +18,11 @@ class MainActivity : AppCompatActivity() {
 
         val userData = intent.getParcelableExtra<UserDataInput>(LoginActivity.INTENT_USER_DATA)
 
+        val myPageFragment = MyPageFragment()
+        val bundle = Bundle()
+        bundle.putParcelable("userData",userData)
+        myPageFragment.arguments = bundle
+
         val currentFragment = supportFragmentManager.findFragmentById(binding.fcvHome.id)
         if (currentFragment == null) {
             supportFragmentManager.beginTransaction()

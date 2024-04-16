@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sopt.now.Friend.FriendAdapter
 import com.sopt.now.UserAdapter
@@ -32,20 +33,20 @@ class HomeFragment: Fragment() {
         val friendAdapter = FriendAdapter()
         val userAdapter = UserAdapter()
 
-
-//        val concatAdapter = ConcatAdapter(userAdapter, friendAdapter)
-
-        binding.rvFriends.run {
-            adapter = friendAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
-        binding.rvFriends.run {
-//            adapter = concatAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
-
-
         friendAdapter.setFriendList(viewModel.mockFriendList)
+
+        val concatAdapter = ConcatAdapter(userAdapter, friendAdapter)
+
+        binding.rvFriends.run {
+            adapter = concatAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+        binding.rvFriends.run {
+            adapter = concatAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
+
     }
     override fun onDestroyView() {
         super.onDestroyView()
