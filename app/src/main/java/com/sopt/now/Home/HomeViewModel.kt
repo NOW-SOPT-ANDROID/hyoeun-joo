@@ -5,6 +5,7 @@ import com.sopt.now.Friend.FriendData
 import com.sopt.now.R
 
 class HomeViewModel : ViewModel() {
+
     val mockFriendList = listOf<FriendData>(
         FriendData(
             profileImage = R.drawable.ic_person_black_24,

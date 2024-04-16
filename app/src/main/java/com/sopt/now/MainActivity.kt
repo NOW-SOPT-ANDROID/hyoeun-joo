@@ -46,8 +46,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_mypage -> {
                     val userData =
                         intent.getParcelableExtra<UserDataInput>(LoginActivity.INTENT_USER_DATA)
-
-                    Log.d("IntentData", "main data: $userData")
                     val myPageFragment = MyPageFragment()
                     val bundle = Bundle()
                     bundle.putParcelable("userData", userData)

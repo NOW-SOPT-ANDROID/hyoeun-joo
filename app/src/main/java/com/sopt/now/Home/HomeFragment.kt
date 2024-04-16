@@ -30,6 +30,7 @@ class HomeFragment: Fragment() {
     private val viewModel by viewModels<HomeViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val friendAdapter = FriendAdapter()
         val userAdapter = UserAdapter()
 
@@ -37,10 +38,6 @@ class HomeFragment: Fragment() {
 
         val concatAdapter = ConcatAdapter(userAdapter, friendAdapter)
 
-        binding.rvFriends.run {
-            adapter = concatAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
         binding.rvFriends.run {
             adapter = concatAdapter
             layoutManager = LinearLayoutManager(requireContext())
