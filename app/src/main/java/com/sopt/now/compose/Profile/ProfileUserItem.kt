@@ -1,4 +1,5 @@
-package com.sopt.now.compose
+package com.sopt.now.compose.Profile
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.ui.Modifier
@@ -8,41 +9,36 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sopt.now.compose.Friend
+import com.sopt.now.compose.R
 
 
 @Composable
-fun ProfileFriendItem(friend: Friend) {
+fun ProfileUserItem(friend: Friend) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 10.dp, horizontal = 10.dp)
-            .height(110.dp),
+            .padding(vertical = 20.dp, horizontal = 10.dp)
+            .background(color = colorResource(id = R.color.skyblue))
+            .height(130.dp),
         verticalAlignment = Alignment.CenterVertically
-    ){
-        val image: Painter = painterResource(id = R.drawable.ic_person_white_24)
+    ) {
+        val image: Painter = painterResource(id = R.drawable.profile)
         Image(
             painter = image,
-            contentDescription = "Profile Image",
-            modifier = Modifier
-                .padding(start = 8.dp)
-                .padding(top = 8.dp)
-                .padding(bottom = 8.dp)
-
-
+            contentDescription = "34기 YB 주효은입니다!",
+            modifier = Modifier.padding(start = 8.dp)
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(
@@ -59,9 +55,3 @@ fun ProfileFriendItem(friend: Friend) {
     }
 }
 
-@Preview
-@Composable
-fun ProfileFriendItemPreview() {
-    val friend = Friend(name = "hi", selfDescription = "sd", profileImage =R.drawable.profile )
-    ProfileFriendItem(friend = friend)
-}

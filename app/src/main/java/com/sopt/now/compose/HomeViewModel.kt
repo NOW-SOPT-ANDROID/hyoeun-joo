@@ -57,7 +57,7 @@ class HomeViewModel : ViewModel() {
             profileImage = R.drawable.ic_person_white_24,
             name = "주효은",
             selfDescription = "34기 YB 주효은입니다!!"
-            ),
+        ),
     )
 
 }
