@@ -17,24 +17,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sopt.now.compose.TextField.mainInfoText
 import com.sopt.now.compose.feature.model.UserDataInput
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
+import kotlin.collections.listOf
 
 
 class MainActivity : ComponentActivity() {
@@ -50,16 +58,57 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     userData?.let { user ->
-                        MainScreen(user)
+                       MyPageScreen(user)
                     }
+                    ScaffoldExample(userData = userData)
                 }
             }
         }
     }
 }
+@Composable
+fun ScaffoldExample(userData: UserDataInput?) {
+    var selectedItem by remember { mutableIntStateOf(0) }
+    val items = listOf(
+            BottomNavItem.Home,
+            BottomNavItem.Search,
+            BottomNavItem.MyPage
+    )
+
+    Scaffold(
+
+        bottomBar = {
+            NavigationBar {
+                items.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.label)},
+                        label = { Text(item.label) },
+                        selected = selectedItem == index,
+                        onClick = { selectedItem = index }
+                    )
+                }
+            }
+        },
+
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            when(selectedItem) {
+                0 -> HomeScreen(viewModel = HomeViewModel())
+                1 -> SearchScreen()
+                2 -> userData?.let { MyPageScreen(it) }
+            }
+
+        }
+    }
+}
+
 
 @Composable
-fun MainScreen(userData: UserDataInput) {
+fun MyPageScreen(userData: UserDataInput) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -94,14 +143,24 @@ fun MainScreen(userData: UserDataInput) {
         mainInfoText(label = stringResource(R.string.string_id), value = userData.userId)
         mainInfoText(label = stringResource(R.string.string_pw), value = userData.userPW)
         mainInfoText(label = stringResource(R.string.string_mbti), value = userData.userMbti)
+        Log.d(userData.userNickName, "MyPageScreen: df")
     }
 }
-
-
-@Preview(showBackground = true)
 @Composable
-fun Preview2() {
-    NOWSOPTAndroidTheme {
-
-    }
+fun SearchScreen(){
+    Text(text = "search화면")
 }
+
+@Composable
+fun HomeScreen(viewModel: HomeViewModel){
+    LazyColumn {
+            items(viewModel.mockUserList){
+                friend -> ProfileUserItem(friend = friend)
+            }
+         items(viewModel.mockFriendList){
+                friend -> ProfileFriendItem(friend = friend)
+        }
+        }
+    }
+
+
