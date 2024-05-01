@@ -11,24 +11,18 @@ import com.sopt.now.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
         val currentFragment = supportFragmentManager.findFragmentById(binding.fcvHome.id)
         if (currentFragment == null) {
             supportFragmentManager.beginTransaction()
                 .add(binding.fcvHome.id, HomeFragment())
                 .commit()
         }
-
         clickBottomNavigation()
-
     }
-
 
     private fun clickBottomNavigation() {
         binding.bnvHome.setOnItemSelectedListener {
@@ -37,12 +31,10 @@ class MainActivity : AppCompatActivity() {
                     replaceFragment(HomeFragment())
                     true
                 }
-
                 R.id.menu_search -> {
                     replaceFragment(SearchFragment())
                     true
                 }
-
                 R.id.menu_mypage -> {
                     val userData =
                         intent.getParcelableExtra<UserDataInput>(LoginActivity.INTENT_USER_DATA)
@@ -53,7 +45,6 @@ class MainActivity : AppCompatActivity() {
                     replaceFragment(myPageFragment)
                     true
                 }
-
                 else -> false
             }
         }
