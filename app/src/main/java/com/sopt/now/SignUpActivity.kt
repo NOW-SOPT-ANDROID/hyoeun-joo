@@ -2,13 +2,12 @@ package com.sopt.now
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.sopt.now.User.UserDataInput
 import com.sopt.now.databinding.ActivitySignupBinding
-import kotlinx.parcelize.Parcelize
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -57,6 +56,8 @@ class SignUpActivity : AppCompatActivity() {
                 else -> {
                     val intent = Intent(this@SignUpActivity, LoginActivity::class.java).apply {
                         putExtra(LoginActivity.INTENT_USER_DATA, userData)
+
+
                     }
                     startActivity(intent)
 

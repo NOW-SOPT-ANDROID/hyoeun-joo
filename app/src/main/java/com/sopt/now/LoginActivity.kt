@@ -2,10 +2,11 @@ package com.sopt.now
 
 import android.content.Intent
 import android.os.Bundle
-import android.service.autofill.UserData
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.sopt.now.User.UserDataInput
 import com.sopt.now.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -35,7 +36,9 @@ class LoginActivity : AppCompatActivity() {
 
                 val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
                     putExtra(MainActivity.INTENT_USER_DATA, userData)
+
                 }
+                Log.d("IntentData", "User data: $userData")
                 startActivity(intent)
                 finish()
             } else {

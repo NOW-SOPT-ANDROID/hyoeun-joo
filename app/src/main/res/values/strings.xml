@@ -28,4 +28,7 @@
     <string name="log_in_fail">로그인 실패</string>
     <string name="log_in_success">로그인 성공</string>
 
+    <!-- User -->
+    <string name="user_description">34기 YB 주효은입니다!!!</string>
+
 </resources>
