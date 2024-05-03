@@ -19,7 +19,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initViews()
-       val userData = intent.getParcelableExtra<UserDataInput>(INTENT_USER_DATA)
 
     }
 
@@ -36,24 +35,20 @@ class LoginActivity : AppCompatActivity() {
     private fun logIn(){
         val loginRequest = getLogInRequestDto()
         authService.logIn(loginRequest).enqueue(object : Callback<ResponseLogInDto> {
-            val userData = intent.getParcelableExtra<UserDataInput>(INTENT_USER_DATA)
 
             override fun onResponse(
                 call: Call<ResponseLogInDto>,
                 response: Response<ResponseLogInDto>,
             ){
                 if (response.isSuccessful) {
-//                    val userId = response.headers()["location"]
                     Toast.makeText(
                         this@LoginActivity,
                         "로그인 성공",
                         Toast.LENGTH_SHORT,
                     ).show()
-                val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
-                    putExtra(MainActivity.INTENT_USER_DATA, userData)
-                }
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
-                    finish()
+//                    finish()
 
                 }else {
                     val error = response.message()
@@ -78,8 +73,10 @@ class LoginActivity : AppCompatActivity() {
             password = password
         )
     }
-    companion object {
+        companion object {
         const val INTENT_USER_DATA = "userData"
     }
+
+
 }
 
