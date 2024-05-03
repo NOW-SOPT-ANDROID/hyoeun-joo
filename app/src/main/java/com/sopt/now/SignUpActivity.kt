@@ -1,5 +1,6 @@
 package com.sopt.now
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -41,6 +42,14 @@ class SignUpActivity : AppCompatActivity() {
                         "회원가입 성공 유저의 ID는 $userId 입니다",
                         Toast.LENGTH_SHORT,
                     ).show()
+
+                    userId?.let{
+                        val intent = Intent(this@SignUpActivity,LoginActivity::class.java).apply {
+                            putExtra("userId", it)
+                        }
+                        startActivity(intent)
+                    }
+
                     finish()
 
                 } else {

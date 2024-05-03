@@ -1,9 +1,9 @@
 package com.sopt.now
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.sopt.now.User.UserDataInput
 import com.sopt.now.api.ServicePool.authService
 import com.sopt.now.databinding.ActivityLoginBinding
 import com.sopt.now.dto.RequestLogInDto
@@ -41,14 +41,20 @@ class LoginActivity : AppCompatActivity() {
                 response: Response<ResponseLogInDto>,
             ){
                 if (response.isSuccessful) {
+                    val userId = response.headers()["location"]
+                    Log.d("LoginActivityt", "userId: $userId")
+
                     Toast.makeText(
                         this@LoginActivity,
                         "로그인 성공",
                         Toast.LENGTH_SHORT,
                     ).show()
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
-//                    finish()
+
+                val Intent = Intent(this@LoginActivity, MainActivity::class.java).apply{
+                    putExtra("userId",userId)
+                }
+                    startActivity(Intent)
+                   finish()
 
                 }else {
                     val error = response.message()
@@ -72,9 +78,6 @@ class LoginActivity : AppCompatActivity() {
             authenticationId = id,
             password = password
         )
-    }
-        companion object {
-        const val INTENT_USER_DATA = "userData"
     }
 
 
