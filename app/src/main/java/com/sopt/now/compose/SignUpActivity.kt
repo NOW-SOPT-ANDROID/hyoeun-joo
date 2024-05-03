@@ -32,6 +32,7 @@ import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import android.content.Context
 import android.content.Intent
 import android.os.Message
+import android.util.Log
 import android.view.View
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -41,7 +42,15 @@ import com.sopt.now.compose.Constants.Constant.Companion.MAX_PW_LENGTH
 import com.sopt.now.compose.Constants.Constant.Companion.MIN_ID_LENGTH
 import com.sopt.now.compose.Constants.Constant.Companion.MIN_PW_LENGTH
 import com.sopt.now.compose.TextField.CustomTextField
+import com.sopt.now.compose.api.AuthService
+import com.sopt.now.compose.api.ServicePool
+import com.sopt.now.compose.api.ServicePool.authService
+import com.sopt.now.compose.dto.RequestSignUpDto
+import com.sopt.now.compose.dto.ResponseSignUpDto
 import com.sopt.now.compose.feature.model.UserDataInput
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +61,6 @@ class SignUpActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
                     SignUpScreen()
                 }
             }
@@ -65,10 +73,52 @@ fun SignUpScreen() {
     var signup_id by remember { mutableStateOf("") }
     var signup_pw by remember { mutableStateOf("") }
     var signup_name by remember { mutableStateOf("") }
-    var signup_mbti by remember { mutableStateOf("") }
+    var signup_phone by remember { mutableStateOf("") }
     val context = LocalContext.current
 
-    val userData = UserDataInput(signup_id, signup_pw, signup_name, signup_mbti)
+    fun getSignUpRequestDto(): RequestSignUpDto {
+        return RequestSignUpDto(
+            authenticationId = signup_id,
+            password = signup_pw,
+            nickname = signup_name,
+            phone = signup_phone
+        )
+    }
+
+    fun signUp(context: Context) {
+        val signUpRequest = getSignUpRequestDto()
+        authService.signUp(signUpRequest).enqueue(object : Callback<ResponseSignUpDto> {
+            override fun onResponse(
+                call: Call<ResponseSignUpDto>,
+                response: Response<ResponseSignUpDto>,
+            ) {
+                if (response.isSuccessful) {
+                    val data: ResponseSignUpDto? = response.body()
+                    val userId = response.headers()["location"]
+                    Toast.makeText(
+                        context,
+                        "회원가입 성공 유저의 ID는 $userId 입니둥",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    Log.d("SignUp", "data: $data, userId: $userId")
+
+                    val toLogIn = Intent(context, LoginActivity::class.java)
+                    context.startActivity(toLogIn)
+                } else {
+                    val error = response.message()
+                    Toast.makeText(
+                        context,
+                        "로그인이 실패 $error",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
+            override fun onFailure(call: Call<ResponseSignUpDto>, t: Throwable) {
+                Log.e("SignUp", "서버 요청 실패", t)
+                Toast.makeText(context, "서버 에러 발생 ", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -106,11 +156,11 @@ fun SignUpScreen() {
         )
 
         Spacer(modifier = Modifier.height(30.dp))
-        Text(text = "MBTI", fontSize = 30.sp, color = Color.Black)
+        Text(text = "Phone", fontSize = 30.sp, color = Color.Black)
         CustomTextField(
-            value = signup_mbti,
-            onInputChange = { signup_mbti = it },
-            label = stringResource(R.string.tv_sign_up_mbti_hint)
+            value = signup_phone,
+            onInputChange = { signup_phone = it },
+            label = stringResource(R.string.tv_sign_up_phone_hint)
         )
         Spacer(modifier = Modifier.height(46.dp))
         Row(
@@ -119,51 +169,14 @@ fun SignUpScreen() {
         ) {
             Button(
                 onClick = {
-                    when {
-                        signup_id.length !in MIN_ID_LENGTH..MAX_ID_LENGTH -> {
-                            showToast(context, R.string.id_error)
-
-                        }
-
-                        signup_pw.length !in MIN_PW_LENGTH..MAX_PW_LENGTH -> {
-                            showToast(context, R.string.pw_error)
-
-                        }
-
-                        signup_name.isBlank() -> {
-                            showToast(context, R.string.nickname_error)
-
-                        }
-
-                        signup_mbti.length > MAX_MBTI_LENGTH -> {
-                            showToast(context, R.string.mbti_error)
-
-                        }
-
-                        else -> {
-                            val toLogin = Intent(context, LoginActivity::class.java).apply {
-                                putExtra("user_data", userData)
-                            }
-
-                            context.startActivity(toLogin)
-
-                            showToast(context, R.string.sign_up_success)
-
-                        }
-                    }
+                    signUp(context)
                 },
                 modifier = Modifier.width(280.dp)
             ) {
                 Text(text = stringResource(R.string.sign_up_btn), fontSize = 30.sp)
-
-
             }
         }
-
-
     }
-
-
 }
 
 fun showToast(context: Context, message: Int) {
@@ -178,6 +191,6 @@ fun showToast(context: Context, message: Int) {
 @Composable
 fun SignUpPreview() {
     NOWSOPTAndroidTheme {
-        SignUpScreen()
+//        SignUpScreen()
     }
 }
