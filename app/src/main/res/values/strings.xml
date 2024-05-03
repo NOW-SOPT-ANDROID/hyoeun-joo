@@ -29,4 +29,9 @@
     <string name="log_in_btn">로그인</string>
     <string name="log_in_fail">로그인 실패</string>
     <string name="log_in_success">로그인 성공</string>
+
+    <!--BottomNavigation-->
+    <string name="BottomNavi_home">Home</string>
+    <string name="BottomNavi_search">Search</string>
+    <string name="BottomNavi_myPage">MyPage</string>
 </resources>
