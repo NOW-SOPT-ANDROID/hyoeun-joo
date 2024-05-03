@@ -30,7 +30,7 @@ fun ProfileFriendItem(friend: Friend) {
             .height(110.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
-        val image: Painter = painterResource(id = R.drawable.ic_person_white_24)
+        val image: Painter = painterResource(id = R.drawable.ic_friend_black_24)
         Image(
             painter = image,
             contentDescription = "Profile Image",

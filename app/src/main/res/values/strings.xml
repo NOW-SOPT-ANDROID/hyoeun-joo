@@ -8,7 +8,7 @@
     <string name="string_pw">PW</string>
     <string name="string_pw_hint">비밀번호를 입력해주세요</string>
     <string name="string_nickname">닉네임</string>
-    <string name="string_mbti">MBTI</string>
+    <string name="string_phone">Phone</string>
 
     <string name="id_error">ID는 6~10글자 사이로 입력해주세요</string>
     <string name="pw_error">패스워드는 8~12글자 사이로 입력해주세요</string>
