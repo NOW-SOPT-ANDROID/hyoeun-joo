@@ -2,6 +2,8 @@ package com.sopt.now.compose
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -20,7 +22,13 @@ import androidx.compose.ui.unit.sp
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import androidx.compose.ui.res.stringResource
 import com.sopt.now.compose.TextField.CustomTextField
-import com.sopt.now.compose.feature.model.UserDataInput
+import com.sopt.now.compose.api.ServicePool.authService
+import com.sopt.now.compose.dto.RequestLogInDto
+import com.sopt.now.compose.dto.ResponseLogInDto
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +51,50 @@ fun LoginScreen(intent: Intent) {
     var login_id by remember { mutableStateOf("") }
     var login_pw by remember { mutableStateOf("") }
     val context = LocalContext.current
-    val userData: UserDataInput? = intent?.getParcelableExtra("user_data")
 
+    fun getLogInRequestDto(): RequestLogInDto {
+        val id = login_id
+        val password = login_pw
+        return RequestLogInDto(
+            authenticationId = id,
+            password = password
+        )
+    }
+
+    fun logIn() {
+        val loginRequest = getLogInRequestDto()
+        authService.logIn(loginRequest).enqueue(object : Callback<ResponseLogInDto> {
+            override fun onResponse(
+                call: Call<ResponseLogInDto>,
+                response: Response<ResponseLogInDto>,
+            ) {
+                if (response.isSuccessful) {
+                    val userId = response.headers()["location"]
+                    Toast.makeText(
+                        context,
+                        "로그인 성공",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+
+                    val intent = Intent(context, MainActivity::class.java).apply {
+                        putExtra("userId", userId)
+                    }
+                    context.startActivity(intent)
+                } else {
+                    val error = response.message()
+                    Toast.makeText(
+                        context,
+                        "로그인 실패 $error",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseLogInDto>, t: Throwable) {
+                Toast.makeText(context, "서버 에러 발생 ", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
     Column(
         modifier = Modifier
@@ -96,27 +146,7 @@ fun LoginScreen(intent: Intent) {
                 }
                 Spacer(modifier = Modifier.width(10.dp))
                 Button(onClick = {
-
-                    val loginId = login_id
-                    val loginPw = login_pw
-                    val toMain = Intent(context, MainActivity::class.java)
-
-                    val signupId = userData?.getUserSignUpId()
-                    val signupPw = userData?.getUserSignUpPw()
-
-
-                    when {
-                        loginId == signupId && loginPw == signupPw -> {
-                            toMain.putExtra("user_data", userData)
-
-                            context.startActivity(toMain)
-                            showToast(context, R.string.log_in_success)
-                        }
-
-                        else -> {
-                            showToast(context, R.string.log_in_fail)
-                        }
-                    }
+                    logIn()
                 }, modifier = Modifier.width(180.dp)) {
                     Text(text = stringResource(R.string.log_in_btn), fontSize = 20.sp)
                 }
@@ -124,4 +154,3 @@ fun LoginScreen(intent: Intent) {
         }
     }
 }
-
