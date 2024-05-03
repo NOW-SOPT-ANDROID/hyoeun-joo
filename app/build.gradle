@@ -5,6 +5,8 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
 }
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     namespace 'com.sopt.now.compose'
@@ -20,6 +22,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
+        }
+
+        buildConfigField "String", "AUTH_BASE_URL", properties["base.url"]
+        buildFeatures {
+            buildConfig true
         }
     }
 
