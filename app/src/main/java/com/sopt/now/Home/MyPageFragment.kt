@@ -19,8 +19,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-
-class MyPageFragment: Fragment() {
+class MyPageFragment : Fragment() {
     private var _binding: FragmentMyPageBinding? = null
     private val binding: FragmentMyPageBinding
         get() = requireNotNull(_binding)
@@ -30,7 +29,7 @@ class MyPageFragment: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentMyPageBinding.inflate(inflater, container, false)
         return binding.root
@@ -50,33 +49,34 @@ class MyPageFragment: Fragment() {
     }
 
     private fun getUserInfo(userId: String) {
-        ServicePool.authService.getUserInfo(userId.toInt()).enqueue(object : Callback<ResponseUserProfile> {
-            override fun onResponse(
-                call: Call<ResponseUserProfile>,
-                response: Response<ResponseUserProfile>
-            ) {
-                if (response.isSuccessful) {
-                    val userProfile = response.body()
-                    Log.d("MyPageFragment", "User profile: $userProfile")
+        ServicePool.authService.getUserInfo(userId.toInt())
+            .enqueue(object : Callback<ResponseUserProfile> {
+                override fun onResponse(
+                    call: Call<ResponseUserProfile>,
+                    response: Response<ResponseUserProfile>,
+                ) {
+                    if (response.isSuccessful) {
+                        val userProfile = response.body()
+                        Log.d("MyPageFragment", "User profile: $userProfile")
 
-                    userProfile?.let {
-                        with(binding) {
-                            tvUserId.text = "ID: ${it.data.authenticationId}"
-//                            tvUserPw.text = "Password: ${it.password}"
-                            tvUserName.text = "Name: ${it.data.nickname}"
-                            tvUserMbti.text = "MBTI: ${it.data.phone}"
+                        userProfile?.let {
+                            with(binding) {
+                                tvUserId.text = "ID: ${it.data.authenticationId}"
+                                tvUserName.text = "Name: ${it.data.nickname}"
+                                tvPhone.text = "Phone: ${it.data.phone}"
 
+                            }
                         }
+                    } else {
+                        onFailure(call, Throwable("Fail: ${response.code()}"))
                     }
-                } else {
-                    onFailure(call, Throwable("Fail: ${response.code()}"))
                 }
-            }
 
-            override fun onFailure(call: Call<ResponseUserProfile>, t: Throwable) {
-                Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
-            }
+                override fun onFailure(call: Call<ResponseUserProfile>, t: Throwable) {
+                    Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                }
 
-        })
+            })
     }
 }
