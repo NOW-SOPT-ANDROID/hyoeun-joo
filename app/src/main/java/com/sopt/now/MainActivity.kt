@@ -1,6 +1,7 @@
 package com.sopt.now
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sopt.now.Home.HomeFragment
@@ -15,6 +16,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val userId = intent.getStringExtra("userId")
+        Log.d("main","$userId")
+
         val currentFragment = supportFragmentManager.findFragmentById(binding.fcvHome.id)
         if (currentFragment == null) {
             supportFragmentManager.beginTransaction()
@@ -36,13 +40,16 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_mypage -> {
-                    val userData =
-                        intent.getParcelableExtra<UserDataInput>(LoginActivity.INTENT_USER_DATA)
-                    val myPageFragment = MyPageFragment()
-                    val bundle = Bundle()
-                    bundle.putParcelable("userData", userData)
-                    myPageFragment.arguments = bundle
-                    replaceFragment(myPageFragment)
+                    val userId = intent.getStringExtra("userId")
+
+                    userId?.let {
+                        val myPageFragment = MyPageFragment()
+                        val bundle = Bundle().apply {
+                            putString("userId", it)
+                        }
+                        myPageFragment.arguments = bundle
+                        replaceFragment(myPageFragment)
+                    }
                     true
                 }
                 else -> false
@@ -54,10 +61,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_home, fragment)
             .commit()
-    }
-
-    companion object {
-        const val INTENT_USER_DATA = "userData"
     }
 
 }
