@@ -9,20 +9,4 @@ data class UserDataInput(
     val userPW: String,
     val userNickName: String,
     val userMbti: String,
-) : Parcelable {
-    fun getUserSignUpId(): String {
-        return userId
-    }
-
-    fun getUserSignUpPw(): String {
-        return userPW
-    }
-
-    fun getUserSignUpNickName(): String {
-        return userNickName
-    }
-
-    fun getUserSignUpMbti(): String {
-        return userMbti
-    }
-}
+) : Parcelable
