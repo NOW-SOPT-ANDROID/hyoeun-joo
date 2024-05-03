@@ -61,10 +61,10 @@ class MyPageFragment: Fragment() {
 
                     userProfile?.let {
                         with(binding) {
-                            tvUserId.text = "ID: ${it.authenticationId}"
-                            tvUserPw.text = "Password: ${it.password}"
-                            tvUserName.text = "Name: ${it.nickname}"
-                            tvUserMbti.text = "MBTI: ${it.phone}"
+                            tvUserId.text = "ID: ${it.data.authenticationId}"
+//                            tvUserPw.text = "Password: ${it.password}"
+                            tvUserName.text = "Name: ${it.data.nickname}"
+                            tvUserMbti.text = "MBTI: ${it.data.phone}"
 
                         }
                     }
