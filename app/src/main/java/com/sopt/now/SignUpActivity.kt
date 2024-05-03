@@ -8,6 +8,7 @@ import com.sopt.now.api.ServicePool.authService
 import com.sopt.now.databinding.ActivitySignupBinding
 import com.sopt.now.dto.RequestSignUpDto
 import com.sopt.now.dto.ResponseSignUpDto
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,10 +54,12 @@ class SignUpActivity : AppCompatActivity() {
                     finish()
 
                 } else {
-                    val error = response.message()
+                    val errorBody = response.errorBody()?.string() ?: "No error message"
+                    val errorMessage = JSONObject(errorBody).getString("message")
+
                     Toast.makeText(
                         this@SignUpActivity,
-                        "회원가입 실패 $error",
+                        "회원가입 실패 $errorMessage",
                         Toast.LENGTH_SHORT,
                     ).show()
                 }
