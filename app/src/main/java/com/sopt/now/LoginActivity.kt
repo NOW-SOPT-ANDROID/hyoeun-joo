@@ -1,75 +1,57 @@
 package com.sopt.now
+
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.sopt.now.api.ServicePool.authService
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.sopt.now.databinding.ActivityLoginBinding
 import com.sopt.now.dto.RequestLogInDto
-import com.sopt.now.dto.ResponseLogInDto
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var viewModel: LoginViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         initViews()
+        observeLoginViewModel()
 
     }
 
-    private fun initViews(){
-        binding.btnLogin.setOnClickListener{
-            logIn()
+    private fun initViews() {
+        binding.btnLogin.setOnClickListener {
+            val loginRequest = getLogInRequestDto()
+            viewModel.logIn(loginRequest)
         }
         binding.btnSignup.setOnClickListener {
             val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
-           startActivity(intent)
-       }
+            startActivity(intent)
+        }
     }
 
-    private fun logIn(){
-        val loginRequest = getLogInRequestDto()
-        authService.logIn(loginRequest).enqueue(object : Callback<ResponseLogInDto> {
-
-            override fun onResponse(
-                call: Call<ResponseLogInDto>,
-                response: Response<ResponseLogInDto>,
-            ){
-                if (response.isSuccessful) {
-                    val userId = response.headers()["location"]
-                    Log.d("LoginActivityt", "userId: $userId")
-
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "로그인 성공",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-
-                val Intent = Intent(this@LoginActivity, MainActivity::class.java).apply{
-                    putExtra("userId",userId)
+    private fun observeLoginViewModel() {
+        viewModel.loginResult.observe(this, Observer { success ->
+            if (success) {
+                viewModel.userId.value?.let { userId ->
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    intent.putExtra("userId", userId)
+                    startActivity(intent)
+                    finish()
                 }
-                    startActivity(Intent)
-                   finish()
-
-                }else {
-                    val error = response.message()
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "로그인 실패 $error",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
-            }
-            override fun onFailure(call: Call<ResponseLogInDto>, t: Throwable) {
-                Toast.makeText(this@LoginActivity, "서버 에러 발생 ", Toast.LENGTH_SHORT).show()
             }
         })
+
+        viewModel.errorMessage.observe(this, Observer { errorMessage ->
+            Toast.makeText(this@LoginActivity, errorMessage, Toast.LENGTH_SHORT).show()
+        })
     }
+
     private fun getLogInRequestDto(): RequestLogInDto {
         val id = binding.etId.text.toString()
         val password = binding.pw2.text.toString()
