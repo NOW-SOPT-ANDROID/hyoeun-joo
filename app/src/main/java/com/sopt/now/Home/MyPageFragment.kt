@@ -5,14 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowId
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.sopt.now.User.UserDataInput
-import com.sopt.now.api.ApiFactory
 import com.sopt.now.api.ServicePool
 import com.sopt.now.databinding.FragmentMyPageBinding
-import com.sopt.now.dto.ResponseLogInDto
 import com.sopt.now.dto.ResponseUserProfile
 import retrofit2.Call
 import retrofit2.Callback

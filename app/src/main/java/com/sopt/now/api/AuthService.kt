@@ -1,9 +1,9 @@
 package com.sopt.now.api
 
-import com.sopt.now.dto.RequestLogInDto
-import com.sopt.now.dto.RequestSignUpDto
-import com.sopt.now.dto.ResponseLogInDto
-import com.sopt.now.dto.ResponseSignUpDto
+import com.sopt.now.dto.LoginDto.RequestLogInDto
+import com.sopt.now.dto.SignUp.RequestSignUpDto
+import com.sopt.now.dto.LoginDto.ResponseLogInDto
+import com.sopt.now.dto.SignUp.ResponseSignUpDto
 import com.sopt.now.dto.ResponseUserProfile
 import retrofit2.Call
 import retrofit2.http.Body

@@ -1,4 +1,4 @@
-package com.sopt.now.dto
+package com.sopt.now.dto.SignUp
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

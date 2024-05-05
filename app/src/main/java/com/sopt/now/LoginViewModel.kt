@@ -4,8 +4,8 @@ package com.sopt.now
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sopt.now.api.ServicePool
-import com.sopt.now.dto.RequestLogInDto
-import com.sopt.now.dto.ResponseLogInDto
+import com.sopt.now.dto.LoginDto.RequestLogInDto
+import com.sopt.now.dto.LoginDto.ResponseLogInDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

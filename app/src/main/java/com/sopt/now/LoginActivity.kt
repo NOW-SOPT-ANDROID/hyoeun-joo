@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sopt.now.databinding.ActivityLoginBinding
-import com.sopt.now.dto.RequestLogInDto
+import com.sopt.now.dto.LoginDto.RequestLogInDto
 
 
 class LoginActivity : AppCompatActivity() {

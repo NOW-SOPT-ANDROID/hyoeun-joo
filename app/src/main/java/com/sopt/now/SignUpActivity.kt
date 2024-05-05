@@ -6,8 +6,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.api.ServicePool.authService
 import com.sopt.now.databinding.ActivitySignupBinding
-import com.sopt.now.dto.RequestSignUpDto
-import com.sopt.now.dto.ResponseSignUpDto
+import com.sopt.now.dto.SignUp.RequestSignUpDto
+import com.sopt.now.dto.SignUp.ResponseSignUpDto
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
