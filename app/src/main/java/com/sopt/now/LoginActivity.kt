@@ -55,13 +55,10 @@ class LoginActivity : AppCompatActivity() {
     private fun getLogInRequestDto(): RequestLogInDto {
         val id = binding.etId.text.toString()
         val password = binding.pw2.text.toString()
-
         return RequestLogInDto(
             authenticationId = id,
             password = password
         )
     }
-
-
 }
 

@@ -34,7 +34,6 @@ class LoginViewModel : ViewModel() {
 
             override fun onFailure(call: Call<ResponseLogInDto>, t: Throwable) {
                 errorMessage.postValue("서버 에러 발생")
-
             }
         })
     }
