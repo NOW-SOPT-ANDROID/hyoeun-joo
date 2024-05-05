@@ -101,7 +101,6 @@ fun SignUpScreen() {
                         Toast.LENGTH_SHORT,
                     ).show()
                     Log.d("SignUp", "data: $data, userId: $userId")
-
                     val toLogIn = Intent(context, LoginActivity::class.java)
                     context.startActivity(toLogIn)
                 } else {
@@ -179,13 +178,6 @@ fun SignUpScreen() {
     }
 }
 
-fun showToast(context: Context, message: Int) {
-    Toast.makeText(
-        context,
-        message,
-        Toast.LENGTH_SHORT
-    ).show()
-}
 
 @Preview(showBackground = true)
 @Composable

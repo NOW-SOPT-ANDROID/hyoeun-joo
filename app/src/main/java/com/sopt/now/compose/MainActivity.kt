@@ -1,7 +1,6 @@
 package com.sopt.now.compose
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -127,8 +126,6 @@ fun MyPageScreen(userId: String) {
                 ) {
                     if (response.isSuccessful) {
                         userProfile = response.body()
-                        Log.d("MyPageFragment", "User profile: $userProfile")
-
                         userProfile?.let {
                             userProfile = it
                         }
@@ -136,7 +133,6 @@ fun MyPageScreen(userId: String) {
                         onFailure(call, Throwable("Fail: ${response.code()}"))
                     }
                 }
-
                 override fun onFailure(call: Call<ResponseUserProfile>, t: Throwable) {
 
                 }
