@@ -4,70 +4,52 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.sopt.now.api.ServicePool.authService
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.sopt.now.databinding.ActivitySignupBinding
 import com.sopt.now.dto.SignUp.RequestSignUpDto
-import com.sopt.now.dto.SignUp.ResponseSignUpDto
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
+    private lateinit var viewModel: SignUpViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initViews()
 
+        viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
+
+        initViews()
+        observeSignUpViewModel()
     }
 
     private fun initViews() {
         binding.btnSignup2.setOnClickListener {
-            signUp()
+            val signUpRequest = getSignUpRequestDto()
+            viewModel.signUp(signUpRequest)
         }
     }
 
-    private fun signUp() {
-        val signUpRequest = getSignUpRequestDto()
-        authService.signUp(signUpRequest).enqueue(object : Callback<ResponseSignUpDto> {
-            override fun onResponse(
-                call: Call<ResponseSignUpDto>,
-                response: Response<ResponseSignUpDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val userId = response.headers()["location"]
-                    Toast.makeText(
-                        this@SignUpActivity,
-                        "회원가입 성공 유저의 ID는 $userId 입니다",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-
-                    userId?.let{
-                        val intent = Intent(this@SignUpActivity,LoginActivity::class.java).apply {
-                            putExtra("userId", it)
-                        }
-                        startActivity(intent)
+    private fun observeSignUpViewModel() {
+        viewModel.signUpResult.observe(this, Observer { success ->
+            if (success) {
+                viewModel.userId.value?.let { userId ->
+                    val intent = Intent(this@SignUpActivity, LoginActivity::class.java).apply {
+                        putExtra("userId", userId)
                     }
-
-                    finish()
-
-                } else {
-                    val errorBody = response.errorBody()?.string() ?: "No error message"
-                    val errorMessage = JSONObject(errorBody).getString("message")
-
                     Toast.makeText(
                         this@SignUpActivity,
-                        "회원가입 실패 $errorMessage",
-                        Toast.LENGTH_SHORT,
+                        R.string.sign_up_success,
+                        Toast.LENGTH_SHORT
                     ).show()
+                    startActivity(intent)
+                    finish()
                 }
             }
-
-            override fun onFailure(call: Call<ResponseSignUpDto>, t: Throwable) {
-                Toast.makeText(this@SignUpActivity, "서버 에러 발생 ", Toast.LENGTH_SHORT).show()
-            }
+        })
+        viewModel.errorMessage.observe(this, Observer { errorMessage ->
+            Toast.makeText(this@SignUpActivity, errorMessage, Toast.LENGTH_SHORT).show()
         })
     }
 
