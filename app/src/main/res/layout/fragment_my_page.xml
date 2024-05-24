@@ -21,7 +21,7 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/tvUserId"
+        android:id="@+id/tv_UserId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -30,17 +30,17 @@
         android:textSize="40sp" />
 
     <TextView
-        android:id="@+id/tvUserPw"
+        android:id="@+id/tv_Phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvUserId"
+        android:layout_below="@id/tv_UserId"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="@string/string_pw"
         android:textSize="30dp" />
 
     <TextView
-        android:id="@+id/tvUserName"
+        android:id="@+id/tv_UserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
@@ -48,14 +48,5 @@
         android:text="@string/string_nickname"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/tvUserMbti"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvUserPw"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/string_mbti"
-        android:textSize="30sp" />
 
 </RelativeLayout>

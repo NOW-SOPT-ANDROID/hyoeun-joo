@@ -2,48 +2,32 @@ package com.sopt.now
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
-import com.sopt.now.User.UserDataInput
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.sopt.now.databinding.ActivityLoginBinding
+import com.sopt.now.dto.LoginDto.RequestLogInDto
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var viewModel: LoginViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
-        fun showSnacker(view: View, message: String) {
-            Snackbar.make(
-                view,
-                message,
-                Snackbar.LENGTH_SHORT
-            ).show()
-        }
         setContentView(binding.root)
-        val userData = intent.getParcelableExtra<UserDataInput>(INTENT_USER_DATA)
 
-        val signId = userData?.getUserSignUpId()
-        val signPw = userData?.getUserSignUpPw()
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        initViews()
+        observeLoginViewModel()
 
+    }
+
+    private fun initViews() {
         binding.btnLogin.setOnClickListener {
-            val editid = binding.etId.text.toString()
-            val editpw = binding.pw2.text.toString()
-            if (editid == signId && editpw == signPw) {
-                showSnacker(binding.root, getString(R.string.log_in_success))
-
-
-                val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
-                    putExtra(MainActivity.INTENT_USER_DATA, userData)
-
-                }
-                Log.d("IntentData", "User data: $userData")
-                startActivity(intent)
-                finish()
-            } else {
-                showSnacker(binding.root, getString(R.string.log_in_fail))
-            }
+            val loginRequest = getLogInRequestDto()
+            viewModel.logIn(loginRequest)
         }
         binding.btnSignup.setOnClickListener {
             val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
@@ -51,8 +35,30 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    companion object {
-        const val INTENT_USER_DATA = "userData"
+    private fun observeLoginViewModel() {
+        viewModel.loginResult.observe(this, Observer { success ->
+            if (success) {
+                viewModel.userId.value?.let { userId ->
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    intent.putExtra("userId", userId)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        })
+
+        viewModel.errorMessage.observe(this, Observer { errorMessage ->
+            Toast.makeText(this@LoginActivity, errorMessage, Toast.LENGTH_SHORT).show()
+        })
+    }
+
+    private fun getLogInRequestDto(): RequestLogInDto {
+        val id = binding.etId.text.toString()
+        val password = binding.pw2.text.toString()
+        return RequestLogInDto(
+            authenticationId = id,
+            password = password
+        )
     }
 }
 

@@ -5,23 +5,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.sopt.now.User.UserDataInput
+import com.sopt.now.api.ServicePool
 import com.sopt.now.databinding.FragmentMyPageBinding
+import com.sopt.now.dto.ResponseUserProfile
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
-class MyPageFragment: Fragment() {
-    //Nullable하고, OnDestroyView()에서 null로 해제해주는 객체
+class MyPageFragment : Fragment() {
     private var _binding: FragmentMyPageBinding? = null
-    //NonNullable하고, get()을 이용하여 값을 넣어주는 객체
-    //binding은 항상 _binding을 반환하기 때문에 null이 될 수 없다. val로 선언하기
     private val binding: FragmentMyPageBinding
         get() = requireNotNull(_binding)
+
+    private var userId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentMyPageBinding.inflate(inflater, container, false)
         return binding.root
@@ -30,29 +34,45 @@ class MyPageFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        val userData = arguments?.getParcelable<UserDataInput>(INTENT_USER_DATA)
-
-        val signId = userData?.getUserSignUpId()
-        val signPw = userData?.getUserSignUpPw()
-        val signNickname = userData?.getUserSignUpNickName()
-        val signMbti = userData?.getUserSignUpMbti()
-
-        Log.d("IntentData", "fragment data: $userData")
-        Log.d("IntentData", "fragment data: $signId")
-
-        with(binding) {
-            tvUserId.text = "ID: $signId"
-            tvUserPw.text = "Password: $signPw"
-            tvUserName.text = "Name: $signNickname"
-            tvUserMbti.text = "MBTI: $signMbti"
-        }
+        userId = arguments?.getString("userId")
+        Log.d("MyPageFragment", "userId: $userId")
+        userId?.let { getUserInfo(it) }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-    companion object {
-        const val INTENT_USER_DATA = "userData"
+
+    private fun getUserInfo(userId: String) {
+        ServicePool.authService.getUserInfo(userId.toInt())
+            .enqueue(object : Callback<ResponseUserProfile> {
+                override fun onResponse(
+                    call: Call<ResponseUserProfile>,
+                    response: Response<ResponseUserProfile>,
+                ) {
+                    if (response.isSuccessful) {
+                        val userProfile = response.body()
+                        Log.d("MyPageFragment", "User profile: $userProfile")
+
+                        userProfile?.let {
+                            with(binding) {
+                                tvUserId.text = "ID: ${it.data.authenticationId}"
+                                tvUserName.text = "Name: ${it.data.nickname}"
+                                tvPhone.text = "Phone: ${it.data.phone}"
+
+                            }
+                        }
+                    } else {
+                        onFailure(call, Throwable("Fail: ${response.code()}"))
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseUserProfile>, t: Throwable) {
+                    Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+            })
     }
 }

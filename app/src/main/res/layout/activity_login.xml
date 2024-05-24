@@ -58,6 +58,7 @@
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/tv_pw" />
 
+
     <Button
         android:id="@+id/btn_login"
         android:layout_width="150dp"
@@ -67,12 +68,9 @@
         android:text="@string/log_in_btn"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        />
+        app:layout_constraintStart_toStartOf="parent"        />
 
     <Button
-
         android:id="@+id/btn_signup"
         android:layout_width="180dp"
         android:layout_height="50dp"
@@ -82,7 +80,5 @@
         android:text="@string/sign_up_btn"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        />
+        app:layout_constraintStart_toStartOf="parent"        />
 </androidx.constraintlayout.widget.ConstraintLayout>

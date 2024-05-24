@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:text="@string/string_mbti"
+        android:text="Phone Number"
         android:textSize="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_nickname_signup" />
@@ -88,7 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:hint="@string/tv_sign_up_mbti_hint"
+        android:hint="phone number를 입력해주세요"
         app:layout_constraintTop_toBottomOf="@+id/tv_mbti_signup" />
 
     <Button
