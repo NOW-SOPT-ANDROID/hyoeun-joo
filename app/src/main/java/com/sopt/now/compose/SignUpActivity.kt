@@ -36,6 +36,7 @@ import android.util.Log
 import android.view.View
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sopt.now.compose.Constants.Constant.Companion.MAX_ID_LENGTH
 import com.sopt.now.compose.Constants.Constant.Companion.MAX_MBTI_LENGTH
 import com.sopt.now.compose.Constants.Constant.Companion.MAX_PW_LENGTH
@@ -61,7 +62,8 @@ class SignUpActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SignUpScreen()
+                    val signUpViewModel: SignUpViewModel = viewModel()
+                    SignUpScreen(signUpViewModel)
                 }
             }
         }
@@ -69,55 +71,9 @@ class SignUpActivity : ComponentActivity() {
 }
 
 @Composable
-fun SignUpScreen() {
-    var signup_id by remember { mutableStateOf("") }
-    var signup_pw by remember { mutableStateOf("") }
-    var signup_name by remember { mutableStateOf("") }
-    var signup_phone by remember { mutableStateOf("") }
+fun SignUpScreen(signUpViewModel: SignUpViewModel) {
     val context = LocalContext.current
 
-    fun getSignUpRequestDto(): RequestSignUpDto {
-        return RequestSignUpDto(
-            authenticationId = signup_id,
-            password = signup_pw,
-            nickname = signup_name,
-            phone = signup_phone
-        )
-    }
-
-    fun signUp(context: Context) {
-        val signUpRequest = getSignUpRequestDto()
-        authService.signUp(signUpRequest).enqueue(object : Callback<ResponseSignUpDto> {
-            override fun onResponse(
-                call: Call<ResponseSignUpDto>,
-                response: Response<ResponseSignUpDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseSignUpDto? = response.body()
-                    val userId = response.headers()["location"]
-                    Toast.makeText(
-                        context,
-                        "회원가입 성공 유저의 ID는 $userId 입니둥",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                    Log.d("SignUp", "data: $data, userId: $userId")
-                    val toLogIn = Intent(context, LoginActivity::class.java)
-                    context.startActivity(toLogIn)
-                } else {
-                    val error = response.message()
-                    Toast.makeText(
-                        context,
-                        "로그인이 실패 $error",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
-            }
-            override fun onFailure(call: Call<ResponseSignUpDto>, t: Throwable) {
-                Log.e("SignUp", "서버 요청 실패", t)
-                Toast.makeText(context, "서버 에러 발생 ", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -134,31 +90,31 @@ fun SignUpScreen() {
         Spacer(modifier = Modifier.height(60.dp))
         Text(text = "ID", fontSize = 30.sp, color = Color.Black)
         CustomTextField(
-            value = signup_id,
-            onInputChange = { signup_id = it },
+            value = signUpViewModel.signupId.value,
+            onInputChange = { signUpViewModel.signupId.value = it },
             label = stringResource(R.string.string_id_hint)
         )
 
         Spacer(modifier = Modifier.height(46.dp))
         Text(text = "PW", fontSize = 30.sp, color = Color.Black)
         CustomTextField(
-            value = signup_pw,
-            onInputChange = { signup_pw = it },
+            value = signUpViewModel.signupPw.value,
+            onInputChange = { signUpViewModel.signupPw.value = it },
             label = stringResource(R.string.string_pw_hint)
         )
         Spacer(modifier = Modifier.height(46.dp))
         Text(text = "Name", fontSize = 30.sp, color = Color.Black)
         CustomTextField(
-            value = signup_name,
-            onInputChange = { signup_name = it },
+            value = signUpViewModel.signupName.value,
+            onInputChange = { signUpViewModel.signupName.value = it },
             label = stringResource(R.string.tv_sign_up_nickname_hint)
         )
 
         Spacer(modifier = Modifier.height(30.dp))
         Text(text = "Phone", fontSize = 30.sp, color = Color.Black)
         CustomTextField(
-            value = signup_phone,
-            onInputChange = { signup_phone = it },
+            value = signUpViewModel.signupPhone.value,
+            onInputChange = { signUpViewModel.signupPhone.value = it },
             label = stringResource(R.string.tv_sign_up_phone_hint)
         )
         Spacer(modifier = Modifier.height(46.dp))
@@ -168,7 +124,7 @@ fun SignUpScreen() {
         ) {
             Button(
                 onClick = {
-                    signUp(context)
+                    signUpViewModel.signUp(context)
                 },
                 modifier = Modifier.width(280.dp)
             ) {
