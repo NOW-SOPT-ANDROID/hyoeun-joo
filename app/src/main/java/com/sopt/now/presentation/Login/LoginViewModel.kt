@@ -1,6 +1,7 @@
 package com.sopt.now.presentation.Login
 
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +13,8 @@ import retrofit2.HttpException
 class LoginViewModel(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    val loginResult: MutableLiveData<Boolean> = MutableLiveData()
+    private val _loginResult: MutableLiveData<Boolean> = MutableLiveData()
+    val loginResult: LiveData<Boolean> get() = _loginResult
     val errorMessage: MutableLiveData<String> = MutableLiveData()
     val userId: MutableLiveData<String> = MutableLiveData()
     fun logIn(authData: AuthEntity) {
@@ -21,8 +23,8 @@ class LoginViewModel(
             .onSuccess { response ->
                 val userId =  response.headers()["Location"]
                 userId?.let {
-                    this@LoginViewModel.userId.value =it
-                    loginResult.value = true
+                    this@LoginViewModel.userId.postValue(it)
+                    _loginResult.postValue(true)
                 }
             }
             .onFailure{ t ->
@@ -31,6 +33,8 @@ class LoginViewModel(
                     errorMessage.postValue("$error")
                 }
                 errorMessage.postValue("서버 에러 발생")}
+
+            //비교 용으로 남겨놨습니다
 
 //        ServicePool.authService.logIn(loginRequest).enqueue(object : Callback<ResponseLogInDto> {
 //            override fun onResponse(

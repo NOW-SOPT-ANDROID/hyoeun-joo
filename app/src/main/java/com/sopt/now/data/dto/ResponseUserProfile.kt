@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseUserProfile(
+data class ResponseUserProfile( //응답 구조
     @SerialName("code")
     val code: Int,
     @SerialName("message")
@@ -13,7 +13,7 @@ data class ResponseUserProfile(
     val data: UserData,
 ) {
     @Serializable
-    data class UserData(
+    data class UserData( //JSON 응답의 data 구조
         @SerialName("authenticationId")
         val authenticationId: String,
         @SerialName("nickname")
