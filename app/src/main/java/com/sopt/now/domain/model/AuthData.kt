@@ -2,7 +2,7 @@ package com.sopt.now.domain.model
 
 import android.provider.ContactsContract.CommonDataKinds.Phone
 
-data class AuthData(
+data class AuthEntity(
     val id: String,
     val pw: String,
     val name: String? = null,

@@ -4,12 +4,10 @@ package com.sopt.now.presentation
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.JsonObject
 import com.sopt.now.domain.AuthRepository
-import com.sopt.now.domain.model.AuthData
+import com.sopt.now.domain.model.AuthEntity
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import retrofit2.HttpException
 
 
 class SignUpViewModel(
@@ -18,7 +16,7 @@ class SignUpViewModel(
     val signUpResult: MutableLiveData<Boolean> = MutableLiveData()
     val errorMessage: MutableLiveData<String> = MutableLiveData()
     val userId: MutableLiveData<String> = MutableLiveData()
-    fun signUp(authData: AuthData) {
+    fun signUp(authData: AuthEntity) {
         viewModelScope.launch {
             runCatching {
                 authRepository.signUp(authData)

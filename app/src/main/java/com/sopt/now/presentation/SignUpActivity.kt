@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.sopt.now.R
 import com.sopt.now.databinding.ActivitySignupBinding
-import com.sopt.now.domain.model.AuthData
+import com.sopt.now.domain.model.AuthEntity
 import com.sopt.now.presentation.Login.LoginActivity
 import com.sopt.now.presentation.User.SignUpViewModelFactory
 
@@ -54,12 +54,12 @@ class SignUpActivity : AppCompatActivity() {
         })
     }
 
-    private fun getSignUpData(): AuthData {
+    private fun getSignUpData(): AuthEntity {
         val id = binding.etIdSignup.text.toString()
         val password = binding.etPwSignup.text.toString()
         val nickname = binding.etNicknameSignup.text.toString()
         val phoneNumber = binding.etMbtiSignup.text.toString()
-        return AuthData(
+        return AuthEntity(
             id = id,
             pw = password,
             name = nickname,

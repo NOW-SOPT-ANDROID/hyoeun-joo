@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.domain.AuthRepository
-import com.sopt.now.domain.model.AuthData
+import com.sopt.now.domain.model.AuthEntity
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -15,7 +15,7 @@ class LoginViewModel(
     val loginResult: MutableLiveData<Boolean> = MutableLiveData()
     val errorMessage: MutableLiveData<String> = MutableLiveData()
     val userId: MutableLiveData<String> = MutableLiveData()
-    fun logIn(authData: AuthData) {
+    fun logIn(authData: AuthEntity) {
         viewModelScope.launch{
             authRepository.logIn(authData)
             .onSuccess { response ->

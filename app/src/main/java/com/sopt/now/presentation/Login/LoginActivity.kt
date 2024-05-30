@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.sopt.now.databinding.ActivityLoginBinding
-import com.sopt.now.domain.model.AuthData
+import com.sopt.now.domain.model.AuthEntity
 import com.sopt.now.presentation.MainActivity
 import com.sopt.now.presentation.SignUpActivity
 
@@ -53,10 +53,10 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun getLoginData(): AuthData {
+    private fun getLoginData(): AuthEntity {
         val id = binding.etId.text.toString()
         val password = binding.pw2.text.toString()
-        return AuthData(
+        return AuthEntity(
             id = id,
             pw = password
         )

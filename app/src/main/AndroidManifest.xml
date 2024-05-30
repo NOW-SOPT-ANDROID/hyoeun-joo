@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -15,8 +16,11 @@
         tools:targetApi="31"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".presentation.Login.LoginActivity"
+            android:name=".TestActivity"
             android:exported="true">
+<!--        <activity-->
+<!--            android:name=".presentation.Login.LoginActivity"-->
+<!--            android:exported="true">-->
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
