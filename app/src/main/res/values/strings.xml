@@ -2,6 +2,8 @@
     <string name="app_name">NOW SOPT Android</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+
 
     <string name="string_id">ID</string>
     <string name="string_id_hint">ID를 입력해주세요</string>
