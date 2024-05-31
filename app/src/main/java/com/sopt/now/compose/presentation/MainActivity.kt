@@ -1,4 +1,4 @@
-package com.sopt.now.compose
+package com.sopt.now.compose.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -33,12 +33,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sopt.now.compose.BottomNavItem
+import com.sopt.now.compose.presentation.Home.HomeViewModel
 import com.sopt.now.compose.Profile.ProfileFriendItem
 import com.sopt.now.compose.Profile.ProfileUserItem
+import com.sopt.now.compose.R
 import com.sopt.now.compose.TextField.mainInfoText
-import com.sopt.now.compose.api.ServicePool
-import com.sopt.now.compose.dto.ResponseUserProfile
-import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
+import com.sopt.now.compose.data.api.ServicePool
+import com.sopt.now.compose.data.dto.ResponseUserProfile
+import com.sopt.now.compose.presentation.theme.NOWSOPTAndroidTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -60,11 +63,9 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-
         }
     }
 }
-
 @Composable
 fun ScaffoldExample(userId: String) {
     var selectedItem by remember { mutableIntStateOf(0) }
@@ -91,7 +92,6 @@ fun ScaffoldExample(userId: String) {
                 }
             }
         },
-
         ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -107,11 +107,9 @@ fun ScaffoldExample(userId: String) {
                     }
                 }
             }
-
         }
     }
 }
-
 
 @Composable
 fun MyPageScreen(userId: String) {
@@ -138,7 +136,6 @@ fun MyPageScreen(userId: String) {
                 }
             })
     }
-
     getUserInfo(userId)
 
 
