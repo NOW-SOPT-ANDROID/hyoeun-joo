@@ -1,9 +1,11 @@
-package com.sopt.now.compose
+package com.sopt.now.compose.presentation.SignUp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,43 +19,27 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
-import android.content.Context
-import android.content.Intent
-import android.os.Message
-import android.util.Log
-import android.view.View
+import com.sopt.now.compose.presentation.theme.NOWSOPTAndroidTheme
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.sopt.now.compose.Constants.Constant.Companion.MAX_ID_LENGTH
-import com.sopt.now.compose.Constants.Constant.Companion.MAX_MBTI_LENGTH
-import com.sopt.now.compose.Constants.Constant.Companion.MAX_PW_LENGTH
-import com.sopt.now.compose.Constants.Constant.Companion.MIN_ID_LENGTH
-import com.sopt.now.compose.Constants.Constant.Companion.MIN_PW_LENGTH
+import com.sopt.now.compose.R
 import com.sopt.now.compose.TextField.CustomTextField
-import com.sopt.now.compose.api.AuthService
-import com.sopt.now.compose.api.ServicePool
-import com.sopt.now.compose.api.ServicePool.authService
-import com.sopt.now.compose.dto.RequestSignUpDto
-import com.sopt.now.compose.dto.ResponseSignUpDto
-import com.sopt.now.compose.feature.model.UserDataInput
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
+import com.sopt.now.compose.domain.model.AuthEntity
+import com.sopt.now.compose.presentation.Login.LoginActivity
+import kotlin.math.sign
 class SignUpActivity : ComponentActivity() {
+    private val viewModel: SignUpViewModel by viewModels { SignUpViewModelFactory() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -62,18 +48,32 @@ class SignUpActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val signUpViewModel: SignUpViewModel = viewModel()
-                    SignUpScreen(signUpViewModel)
+                    SignUpScreen(viewModel)
                 }
+            }
+        }
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.signUpResult.observe(this) { success ->
+            if (success) {
+                val toLogIn = Intent(this, LoginActivity::class.java)
+                startActivity(toLogIn)
+                finish()
+            }
+        }
+        viewModel.errorMessage.observe(this) { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
     }
 }
 
+
 @Composable
 fun SignUpScreen(signUpViewModel: SignUpViewModel) {
-    val context = LocalContext.current
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -89,33 +89,36 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel) {
         )
         Spacer(modifier = Modifier.height(60.dp))
         Text(text = "ID", fontSize = 30.sp, color = Color.Black)
-        CustomTextField(
-            value = signUpViewModel.signupId.value,
-            onInputChange = { signUpViewModel.signupId.value = it },
-            label = stringResource(R.string.string_id_hint)
+        TextField(
+            value = signUpViewModel.signUpId.value,
+            onValueChange = { signUpViewModel.signUpId.value = it },
+            label = { Text(stringResource(R.string.string_id_hint)) },
+            modifier = Modifier.fillMaxWidth()
         )
-
         Spacer(modifier = Modifier.height(46.dp))
         Text(text = "PW", fontSize = 30.sp, color = Color.Black)
-        CustomTextField(
-            value = signUpViewModel.signupPw.value,
-            onInputChange = { signUpViewModel.signupPw.value = it },
-            label = stringResource(R.string.string_pw_hint)
+        TextField(
+            value = signUpViewModel.signUpPw.value,
+            onValueChange = { signUpViewModel.signUpPw.value = it },
+            label = { Text(stringResource(R.string.string_pw_hint)) },
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(46.dp))
         Text(text = "Name", fontSize = 30.sp, color = Color.Black)
-        CustomTextField(
-            value = signUpViewModel.signupName.value,
-            onInputChange = { signUpViewModel.signupName.value = it },
-            label = stringResource(R.string.tv_sign_up_nickname_hint)
+        TextField(
+            value = signUpViewModel.signUpName.value,
+            onValueChange = { signUpViewModel.signUpName.value = it },
+            label = { Text(stringResource(R.string.tv_sign_up_nickname_hint)) },
+            modifier = Modifier.fillMaxWidth()
         )
-
         Spacer(modifier = Modifier.height(30.dp))
         Text(text = "Phone", fontSize = 30.sp, color = Color.Black)
-        CustomTextField(
-            value = signUpViewModel.signupPhone.value,
-            onInputChange = { signUpViewModel.signupPhone.value = it },
-            label = stringResource(R.string.tv_sign_up_phone_hint)
+        TextField(
+            value = signUpViewModel.signUpPhone.value,
+            onValueChange = { signUpViewModel.signUpPhone.value = it },
+            label = { Text(stringResource(R.string.tv_sign_up_phone_hint)) },
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(46.dp))
         Row(
@@ -124,7 +127,13 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel) {
         ) {
             Button(
                 onClick = {
-                    signUpViewModel.signUp(context)
+                    val authData = AuthEntity(
+                        id = signUpViewModel.signUpId.value,
+                        pw = signUpViewModel.signUpPw.value,
+                        name = signUpViewModel.signUpName.value,
+                        phone = signUpViewModel.signUpPhone.value,
+                    )
+                    signUpViewModel.signUp(authData)
                 },
                 modifier = Modifier.width(280.dp)
             ) {
