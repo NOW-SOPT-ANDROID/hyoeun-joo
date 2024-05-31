@@ -66,6 +66,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
 fun ScaffoldExample(userId: String) {
     var selectedItem by remember { mutableIntStateOf(0) }
@@ -92,7 +93,7 @@ fun ScaffoldExample(userId: String) {
                 }
             }
         },
-        ) { innerPadding ->
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding),
@@ -131,6 +132,7 @@ fun MyPageScreen(userId: String) {
                         onFailure(call, Throwable("Fail: ${response.code()}"))
                     }
                 }
+
                 override fun onFailure(call: Call<ResponseUserProfile>, t: Throwable) {
 
                 }

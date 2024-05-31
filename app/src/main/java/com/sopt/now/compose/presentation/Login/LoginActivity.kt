@@ -23,9 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.sopt.now.compose.presentation.theme.NOWSOPTAndroidTheme
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sopt.now.compose.R
-import com.sopt.now.compose.TextField.CustomTextField
 import com.sopt.now.compose.domain.model.AuthEntity
 import com.sopt.now.compose.presentation.MainActivity
 import com.sopt.now.compose.presentation.SignUp.SignUpActivity

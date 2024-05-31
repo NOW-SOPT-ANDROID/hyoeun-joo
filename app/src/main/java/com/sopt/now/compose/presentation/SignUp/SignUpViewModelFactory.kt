@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sopt.now.compose.data.AuthRepoImpl
 import com.sopt.now.compose.data.api.ServicePool
-import com.sopt.now.compose.presentation.Login.LoginViewModel
 
 class SignUpViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
