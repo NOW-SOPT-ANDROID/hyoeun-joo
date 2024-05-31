@@ -1,4 +1,4 @@
-package com.sopt.now.compose.ui.theme.ui.theme
+package com.sopt.now.compose.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
