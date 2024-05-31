@@ -1,4 +1,4 @@
-package com.sopt.now.compose.api
+package com.sopt.now.compose.data.api
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sopt.now.compose.BuildConfig
@@ -15,7 +15,6 @@ object ApiFactory {
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
-
     inline fun <reified T> create(): T = retrofit.create(T::class.java)
 }
 

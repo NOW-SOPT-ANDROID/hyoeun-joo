@@ -1,4 +1,4 @@
-package com.sopt.now.compose.ui.theme
+package com.sopt.now.compose.presentation.theme
 
 import android.app.Activity
 import android.os.Build
