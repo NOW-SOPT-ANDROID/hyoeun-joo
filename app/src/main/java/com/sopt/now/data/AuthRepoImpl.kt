@@ -10,7 +10,7 @@ import retrofit2.Response
 class AuthRepoImpl(
     private val authService: AuthService,
 ) : AuthRepository {
-    override suspend fun logIn(authData: AuthEntity): Result<Response<Unit>> = runCatching  {
+    override suspend fun logIn(authData: AuthEntity): Result<Response<Unit>> = runCatching {
         authService.logIn(
             request = RequestLogInDto(
                 authenticationId = authData.id,
@@ -18,6 +18,7 @@ class AuthRepoImpl(
             )
         )
     }
+
     override suspend fun signUp(authData: AuthEntity): Result<Response<Unit>> = runCatching {
         authService.signUp(
             RequestSignUpDto(
