@@ -12,22 +12,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NOWSOPTAndroid"
-        tools:targetApi="31"
         android:usesCleartextTraffic="true"
-        >
+        tools:targetApi="31">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <activity
-            android:name=".SignUpActivity"
+            android:name=".presentation.SignUp.SignUpActivity"
             android:exported="false"
             android:label="@string/title_activity_sign_up"
             android:theme="@style/Theme.NOWSOPTAndroid" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="false"
-            android:label="@string/title_activity_login"
+            android:label="@string/title_activity_main"
             android:theme="@style/Theme.NOWSOPTAndroid" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".presentation.Login.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.NOWSOPTAndroid">
