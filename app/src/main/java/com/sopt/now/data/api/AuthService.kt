@@ -27,4 +27,5 @@ interface AuthService {
     fun getUserInfo(
         @Header("memberId") memberId : Int
     ): Call<ResponseUserProfile>
+
 }
