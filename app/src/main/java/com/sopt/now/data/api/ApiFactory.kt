@@ -11,6 +11,8 @@ import retrofit2.Retrofit
 object ApiFactory {
     private const val BASE_URL: String = BuildConfig.AUTH_BASE_URL
 
+    private const val FRIEND_BASE_URL: String = BuildConfig.FRIEND_BASE_URL
+
     val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
@@ -22,7 +24,7 @@ object ApiFactory {
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .client(client)
-            .baseUrl(BASE_URL)
+            .baseUrl(FRIEND_BASE_URL)
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
@@ -32,4 +34,5 @@ object ApiFactory {
 
 object ServicePool {
     val authService = ApiFactory.create<AuthService>()
+    val friendListService = ApiFactory.create<FriendListService>()
 }
